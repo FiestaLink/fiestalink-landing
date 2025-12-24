@@ -3,49 +3,158 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FiestaLink</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <title>FiestaLink Landing</title>
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: Arial, sans-serif;
+      overflow: hidden; /* Evita scroll en body */
+    }
+
+    /* Header fijo */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      background-color: #ff6f61;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    /* Footer fijo */
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background-color: #ff6f61;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    footer button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: white;
+      color: #ff6f61;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    footer button:hover {
+      background-color: #ffe6e1;
+    }
+
+    /* Sección central scrollable */
+    main {
+      position: absolute;
+      top: 70px;
+      bottom: 60px;
+      left: 0;
+      right: 0;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      padding: 20px;
+      background: linear-gradient(to bottom, #fff, #fef2f2);
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px 20px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    section p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      line-height: 1.5;
+    }
+
+    .discount {
+      background-color: #ffe6e1;
+      border-radius: 10px;
+      padding: 40px 20px;
+      margin-top: 20px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #ff4d3a;
+    }
+  </style>
 </head>
 <body>
-  <!-- Header / Branding -->
+
   <header>
-    <h1>🎉 FiestaLink</h1>
-    <p>Invitaciones digitales y catálogos para tu evento</p>
+    FiestaLink
   </header>
 
-  <!-- Catálogo / Sección de invitaciones -->
-  <section id="catalogo">
-    <h2>Nuestros diseños</h2>
-    <div class="cards">
-      <div class="card">
-        <img src="img/invitacion1.jpg" alt="Invitación Baby Shower">
-        <h3>Baby Shower</h3>
-        <p>Invitación elegante y divertida.</p>
-      </div>
-      <div class="card">
-        <img src="img/invitacion2.jpg" alt="Invitación Cumpleaños">
-        <h3>Cumpleaños</h3>
-        <p>Diseños coloridos y personalizables.</p>
-      </div>
-      <div class="card">
-        <img src="img/invitacion3.jpg" alt="Invitación Boda">
-        <h3>Bodas</h3>
-        <p>Invitaciones sofisticadas para tu día especial.</p>
-      </div>
-    </div>
-  </section>
+  <main>
+    <!-- Explicación inicial -->
+    <section>
+      <h2>Invitaciones digitales para eventos y fiestas</h2>
+      <p>Formales o divertidas. Recibe el primer borrador en 24hrs, y a un súper precio.</p>
+    </section>
 
-  <!-- Call to Action -->
-  <section id="cta">
-    <h2>Haz tu pedido ahora</h2>
-    <button onclick="alert('Próximamente: formulario de pedido')">Solicitar invitación</button>
-  </section>
+    <!-- Secciones de ejemplo -->
+    <section>
+      <h2>Fiesta Infantil</h2>
+      <p>Aquí irán ejemplos de invitaciones infantiles.</p>
+    </section>
 
-  <!-- Footer -->
+    <section>
+      <h2>Fiesta temática</h2>
+      <p>Aquí irán ejemplos de invitaciones temáticas.</p>
+    </section>
+
+    <section>
+      <h2>Baby Shower / Bautizo</h2>
+      <p>Aquí irán ejemplos de invitaciones para baby shower o bautizo.</p>
+    </section>
+
+    <section>
+      <h2>Boda</h2>
+      <p>Aquí irán ejemplos de invitaciones de boda.</p>
+    </section>
+
+    <!-- Descuento final -->
+    <section>
+      <div class="discount">
+        ¡Descuento en más de tres invitaciones!
+      </div>
+    </section>
+  </main>
+
   <footer>
-    <p>&copy; 2025 FiestaLink. Todos los derechos reservados.</p>
+    <button>Solicitar invitación</button>
   </footer>
 
-  <script src="js/main.js"></script>
 </body>
 </html>
