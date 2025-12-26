@@ -220,6 +220,11 @@
     <section>
       <h2>Invitaciones digitales para fiestas y bodas</h2>
       <p>100% personalizable.<br>Recibe el primer borrador en 24hrs.</p>
+      <div class="example" data-images="boda1.jpg,boda2.jpg,boda3.jpg">
+        <div class="image-wrap">
+          <img src="boda1.jpg" alt="Ejemplo invitación boda" />
+        </div>
+      </div>
     </section>
 
     <!-- Sección: Fiesta (ejemplos) -->
@@ -338,6 +343,20 @@
         }
       });
     });
+
+  let startedOnce = false;
+
+  function startMusicOnFirstScroll() {
+    if (!startedOnce) {
+      music.play().catch(() => {});
+      isPlaying = true;
+      toggle.textContent = '🔊';
+      startedOnce = true;
+      main.removeEventListener('scroll', startMusicOnFirstScroll);
+    }
+  }
+
+  main.addEventListener('scroll', startMusicOnFirstScroll);
   </script>
 </body>
 </html>
