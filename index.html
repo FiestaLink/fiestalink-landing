@@ -354,7 +354,7 @@
 
       <div class="example" data-images="kid2n.jpeg, boda1n.jpeg, baby5n.jpeg, kid8.jpeg">
         <div id="swipe-hint">
-          <span>Desliza para ver ejemplos</span>
+          <span>Desliza hacia abajo para ver ejemplos</span>
         </div>
         <div class="image-wrap">
           <img src="kid8.jpeg" alt="Ejemplo invitación fiesta" />
@@ -623,7 +623,7 @@
     let swipeHidden = false;
 
     main.addEventListener('scroll', () => {
-      if (!swipeHidden && main.scrollTop > 10) {
+      if (!swipeHidden && main.scrollTop > 50) {
         swipeHint.classList.add('hide');
         swipeHidden = true;
       }
