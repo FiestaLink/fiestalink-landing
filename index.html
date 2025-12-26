@@ -193,6 +193,7 @@
 <script>
   const music = document.getElementById("bg-music");
   const toggle = document.getElementById("music-toggle");
+  const scroller = document.querySelector("main"); // el contenedor que realmente scrollea
   let playing = false;
 
   music.volume = 0.3;
@@ -204,7 +205,7 @@
   // Botón de música
   toggle.addEventListener("click", () => {
     if (!playing) {
-      music.play();
+      music.play().catch(() => {}); // silencioso por si falla
       playing = true;
     } else {
       music.pause();
@@ -213,21 +214,39 @@
     updateIcon();
   });
 
-  // Primera interacción: click o scroll → activar música
+  // Primera interacción: click, wheel, scroll de <main>, y gestos táctiles
   function startMusicOnce() {
     if (!playing) {
-      music.play();
+      music.play().catch(() => {}); // algunos navegadores requieren el gesto justo
       playing = true;
       updateIcon();
     }
-    // Eliminar listeners después de la primera vez
-    document.body.removeEventListener("click", startMusicOnce);
-    document.body.removeEventListener("scroll", startMusicOnce);
+    removeFirstInteractionListeners();
   }
 
-  document.body.addEventListener("click", startMusicOnce, { once: true });
-  document.body.addEventListener("scroll", startMusicOnce, { once: true });
+  function removeFirstInteractionListeners() {
+    document.removeEventListener("click", startMusicOnce);
+    window.removeEventListener("wheel", startMusicOnce, { passive: true });
+    scroller.removeEventListener("scroll", startMusicOnce, { passive: true });
+    window.removeEventListener("keydown", startMusicOnce); // por si usan teclas de scroll
+    window.removeEventListener("touchstart", startMusicOnce, { passive: true });
+    window.removeEventListener("touchmove", startMusicOnce, { passive: true });
+    window.removeEventListener("pointerdown", startMusicOnce, { passive: true });
+  }
+
+  // Listeners que cuentan como gesto de usuario
+  document.addEventListener("click", startMusicOnce, { once: true });
+  window.addEventListener("wheel", startMusicOnce, { once: true, passive: true });
+  scroller.addEventListener("scroll", startMusicOnce, { once: true, passive: true });
+  window.addEventListener("keydown", startMusicOnce, { once: true });
+  window.addEventListener("touchstart", startMusicOnce, { once: true, passive: true });
+  window.addEventListener("touchmove", startMusicOnce, { once: true, passive: true });
+  window.addEventListener("pointerdown", startMusicOnce, { once: true, passive: true });
+
+  // Icono inicial
+  updateIcon();
 </script>
+
 
 
 </body>
