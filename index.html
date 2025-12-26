@@ -1,24 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FiestaLink Landing</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body, html {
       height: 100%;
       font-family: 'Poppins', Arial, sans-serif;
       overflow: hidden;
       color: #333;
+      background: linear-gradient(to bottom, #fff, #f0f9ff);
     }
 
     header {
@@ -79,7 +76,7 @@
       overflow-y: scroll;
       scroll-snap-type: y mandatory;
       scroll-behavior: smooth;
-      background: linear-gradient(to bottom, #fff, #f0f9ff);
+      -webkit-overflow-scrolling: touch;
     }
 
     section {
@@ -125,6 +122,59 @@
       100% { transform: scale(1); }
     }
 
+    /* Contenedor de ejemplo (imagen + links) */
+    .example {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .example .image-wrap {
+      width: min(520px, 90%);
+      height: 320px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #ffffff, #f8fafc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(16,24,40,0.06);
+      border: 1px solid rgba(37,99,235,0.06);
+    }
+
+    .example img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .example .links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .example .links a {
+      display: inline-block;
+      padding: 10px 16px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 999px;
+      font-weight: 600;
+      transition: transform .18s ease, background .18s ease;
+      box-shadow: 0 6px 12px rgba(37,99,235,0.12);
+    }
+
+    .example .links a:hover {
+      transform: translateY(-3px);
+      background: #1e40af;
+    }
+
     /* Botón de música */
     #music-toggle {
       position: fixed;
@@ -140,14 +190,31 @@
       z-index: 2000;
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
+
+    /* Indicador pequeño de pista */
+    #track-label {
+      position: fixed;
+      bottom: 140px;
+      right: 20px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      z-index: 2000;
+      pointer-events: none;
+    }
+
+    @media (max-width: 600px) {
+      .example .image-wrap { height: 220px; }
+      section h2 { font-size: 1.8rem; }
+    }
   </style>
 </head>
 
 <body>
 
-  <header>
-    FiestaLink
-  </header>
+  <header>FiestaLink</header>
 
   <main>
     <section>
@@ -155,27 +222,58 @@
       <p>100% personalizable.<br>Recibe el primer borrador en 24hrs.</p>
     </section>
 
-    <section>
+    <!-- Sección: Fiesta (ejemplos) -->
+    <section class="example-section" id="section-fiesta" data-music="music-track-a.mp3">
       <h2>Fiesta Infantil o fiesta temática</h2>
-      <p>Aquí irán ejemplos de invitaciones infantiles.</p>
+
+      <div class="example" data-images="fiesta1.jpg,fiesta2.jpg,fiesta3.jpg">
+        <div class="image-wrap">
+          <img src="fiesta1.jpg" alt="Ejemplo invitación fiesta" />
+        </div>
+
+        <div class="links">
+          <a href="#ejemplo-fiesta-infantil" title="Fiesta infantil">Fiesta infantil</a>
+          <a href="#ejemplo-fiesta-tematica" title="Fiesta temática">Fiesta temática</a>
+        </div>
+      </div>
     </section>
 
-    <section>
+    <!-- Sección: Baby Shower (ejemplos) -->
+    <section class="example-section" id="section-baby" data-music="music-track-b.mp3">
       <h2>Baby Shower o Bautizo</h2>
-      <p>Aquí irán ejemplos de invitaciones para baby shower o bautizo.</p>
+
+      <div class="example" data-images="baby1.jpg,baby2.jpg,baby3.jpg">
+        <div class="image-wrap">
+          <img src="baby1.jpg" alt="Ejemplo invitación baby shower" />
+        </div>
+
+        <div class="links">
+          <a href="#ejemplo-baby-shower" title="Baby Shower">Baby Shower</a>
+          <a href="#ejemplo-bautizo" title="Bautizo">Bautizo</a>
+        </div>
+      </div>
     </section>
 
-    <section>
+    <!-- Sección: Boda (ejemplos) -->
+    <section class="example-section" id="section-boda" data-music="music-track-a.mp3">
       <h2>Boda</h2>
-      <p>Aquí irán ejemplos de invitaciones de boda.</p>
+
+      <div class="example" data-images="boda1.jpg,boda2.jpg,boda3.jpg">
+        <div class="image-wrap">
+          <img src="boda1.jpg" alt="Ejemplo invitación boda" />
+        </div>
+
+        <div class="links">
+          <a href="#ejemplo-boda-1" title="Ejemplo 1">Ejemplo 1</a>
+          <a href="#ejemplo-boda-2" title="Ejemplo 2">Ejemplo 2</a>
+        </div>
+      </div>
     </section>
 
     <section>
       <p>Fiesta o evento: $299 MXN</p>
       <p>Boda: $399 MXN</p>
-      <div class="discount">
-        ¡$150 de descuento en la compra de 3!
-      </div>
+      <div class="discount">¡$150 de descuento en la compra de 3!</div>
     </section>
   </main>
 
@@ -183,71 +281,216 @@
     <button>Solicitar invitación</button>
   </footer>
 
-  <!-- Música -->
-  <audio id="bg-music" loop>
-    <source src="music.mp3" type="audio/mpeg">
+  <!-- Música (un solo elemento que cambia de fuente según sección) -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="music-track-a.mp3" type="audio/mpeg">
   </audio>
 
-  <button id="music-toggle">🔈</button>
+  <button id="music-toggle" aria-pressed="false">🔈</button>
+  <div id="track-label" aria-hidden="true">Pista: A</div>
 
-<script>
-  const music = document.getElementById("bg-music");
-  const toggle = document.getElementById("music-toggle");
-  const scroller = document.querySelector("main"); // el contenedor que realmente scrollea
-  let playing = false;
+  <script>
+    // Elementos principales
+    const music = document.getElementById('bg-music');
+    const toggle = document.getElementById('music-toggle');
+    const trackLabel = document.getElementById('track-label');
+    const scroller = document.querySelector('main');
+    let playing = false;
 
-  music.volume = 0.3;
+    // Volumen por defecto
+    music.volume = 0.3;
 
-  function updateIcon() {
-    toggle.textContent = playing ? "🔊" : "🔈";
-  }
+    // Mapa de nombres de pista para mostrar etiqueta (opcional)
+    const trackNames = {
+      'music-track-a.mp3': 'A',
+      'music-track-b.mp3': 'B'
+    };
 
-  // Botón de música
-  toggle.addEventListener("click", () => {
-    if (!playing) {
-      music.play().catch(() => {}); // silencioso por si falla
-      playing = true;
-    } else {
+    // Actualiza icono y aria
+    function updateIcon() {
+      toggle.textContent = playing ? '🔊' : '🔈';
+      toggle.setAttribute('aria-pressed', playing ? 'true' : 'false');
+    }
+
+    // Cambia la fuente del audio (no reproduce si no está en modo playing)
+    function setMusicSource(src) {
+      if (!src) return;
+      // Si ya es la misma fuente, no hacer nada
+      const currentSrc = music.querySelector('source')?.getAttribute('src') || '';
+      if (currentSrc === src) {
+        // actualizar etiqueta
+        trackLabel.textContent = 'Pista: ' + (trackNames[src] || src);
+        return;
+      }
+      // Cambiar source
       music.pause();
-      playing = false;
+      music.innerHTML = '';
+      const source = document.createElement('source');
+      source.src = src;
+      source.type = 'audio/mpeg';
+      music.appendChild(source);
+      music.load();
+      trackLabel.textContent = 'Pista: ' + (trackNames[src] || src);
+      // Si el usuario ya activó reproducción, reproducir la nueva pista
+      if (playing) {
+        music.play().catch(() => {});
+      }
     }
-    updateIcon();
-  });
 
-  // Primera interacción: click, wheel, scroll de <main>, y gestos táctiles
-  function startMusicOnce() {
-    if (!playing) {
-      music.play().catch(() => {}); // algunos navegadores requieren el gesto justo
-      playing = true;
+    // Toggle manual
+    toggle.addEventListener('click', () => {
+      if (!playing) {
+        music.play().catch(() => {});
+        playing = true;
+      } else {
+        music.pause();
+        playing = false;
+      }
       updateIcon();
+    });
+
+    // Reproducir al primer gesto del usuario (para sortear políticas de autoplay)
+    function startMusicOnce() {
+      if (!playing) {
+        music.play().catch(() => {});
+        playing = true;
+        updateIcon();
+      }
+      removeFirstInteractionListeners();
     }
-    removeFirstInteractionListeners();
-  }
 
-  function removeFirstInteractionListeners() {
-    document.removeEventListener("click", startMusicOnce);
-    window.removeEventListener("wheel", startMusicOnce, { passive: true });
-    scroller.removeEventListener("scroll", startMusicOnce, { passive: true });
-    window.removeEventListener("keydown", startMusicOnce); // por si usan teclas de scroll
-    window.removeEventListener("touchstart", startMusicOnce, { passive: true });
-    window.removeEventListener("touchmove", startMusicOnce, { passive: true });
-    window.removeEventListener("pointerdown", startMusicOnce, { passive: true });
-  }
+    function removeFirstInteractionListeners() {
+      document.removeEventListener('click', startMusicOnce);
+      window.removeEventListener('wheel', startMusicOnce, { passive: true });
+      scroller.removeEventListener('scroll', startMusicOnce, { passive: true });
+      window.removeEventListener('keydown', startMusicOnce);
+      window.removeEventListener('touchstart', startMusicOnce, { passive: true });
+      window.removeEventListener('touchmove', startMusicOnce, { passive: true });
+      window.removeEventListener('pointerdown', startMusicOnce, { passive: true });
+    }
 
-  // Listeners que cuentan como gesto de usuario
-  document.addEventListener("click", startMusicOnce, { once: true });
-  window.addEventListener("wheel", startMusicOnce, { once: true, passive: true });
-  scroller.addEventListener("scroll", startMusicOnce, { once: true, passive: true });
-  window.addEventListener("keydown", startMusicOnce, { once: true });
-  window.addEventListener("touchstart", startMusicOnce, { once: true, passive: true });
-  window.addEventListener("touchmove", startMusicOnce, { once: true, passive: true });
-  window.addEventListener("pointerdown", startMusicOnce, { once: true, passive: true });
+    document.addEventListener('click', startMusicOnce, { once: true });
+    window.addEventListener('wheel', startMusicOnce, { once: true, passive: true });
+    scroller.addEventListener('scroll', startMusicOnce, { once: true, passive: true });
+    window.addEventListener('keydown', startMusicOnce, { once: true });
+    window.addEventListener('touchstart', startMusicOnce, { once: true, passive: true });
+    window.addEventListener('touchmove', startMusicOnce, { once: true, passive: true });
+    window.addEventListener('pointerdown', startMusicOnce, { once: true, passive: true });
 
-  // Icono inicial
-  updateIcon();
-</script>
+    updateIcon();
 
+    // --- Rotación de imágenes por sección ---
+    const exampleBlocks = document.querySelectorAll('.example');
 
+    exampleBlocks.forEach(block => {
+      const imgWrap = block.querySelector('.image-wrap img');
+      const imagesData = block.dataset.images || '';
+      const images = imagesData.split(',').map(s => s.trim()).filter(Boolean);
+      if (!images.length) return;
 
+      let idx = 0;
+      // Asegurarse de que la imagen inicial exista en la lista
+      imgWrap.src = images[0];
+
+      // Rotación cada 3.5s
+      const interval = setInterval(() => {
+        idx = (idx + 1) % images.length;
+        imgWrap.src = images[idx];
+      }, 3500);
+
+      // Si el elemento se elimina del DOM, limpiar interval (precaución)
+      const observer = new MutationObserver(() => {
+        if (!document.body.contains(block)) {
+          clearInterval(interval);
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    });
+
+    // --- Cambio de música según sección visible ---
+    // Regla: las 3 secciones de ejemplos cambian de música; la primera y la última usan la misma pista.
+    // Cada .example-section tiene data-music con el archivo a usar.
+    const exampleSections = document.querySelectorAll('.example-section');
+
+    // IntersectionObserver para detectar sección mayormente visible
+    const observerOptions = {
+      root: scroller,
+      rootMargin: '0px',
+      threshold: [0.5] // cuando al menos 50% visible
+    };
+
+    let currentMusicSrc = music.querySelector('source')?.getAttribute('src') || 'music-track-a.mp3';
+    setMusicSource(currentMusicSrc);
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          const sec = entry.target;
+          const musicSrc = sec.dataset.music || 'music-track-a.mp3';
+          // Cambiar música solo si es diferente
+          if (musicSrc !== currentMusicSrc) {
+            currentMusicSrc = musicSrc;
+            setMusicSource(musicSrc);
+          } else {
+            // actualizar etiqueta aunque sea la misma
+            trackLabel.textContent = 'Pista: ' + (trackNames[musicSrc] || musicSrc);
+          }
+        }
+      });
+    }, observerOptions);
+
+    exampleSections.forEach(s => sectionObserver.observe(s));
+
+    // También, al cargar la página, forzar comprobación de la sección visible
+    // (por si el usuario abre en medio de la página)
+    window.addEventListener('load', () => {
+      // pequeña espera para que el layout esté listo
+      setTimeout(() => {
+        exampleSections.forEach(sec => {
+          const rect = sec.getBoundingClientRect();
+          const mainRect = scroller.getBoundingClientRect();
+          // calcular intersección aproximada con el viewport del scroller
+          const top = Math.max(rect.top, mainRect.top);
+          const bottom = Math.min(rect.bottom, mainRect.bottom);
+          const visibleHeight = Math.max(0, bottom - top);
+          const ratio = visibleHeight / rect.height;
+          if (ratio >= 0.5) {
+            const musicSrc = sec.dataset.music || 'music-track-a.mp3';
+            currentMusicSrc = musicSrc;
+            setMusicSource(musicSrc);
+          }
+        });
+      }, 120);
+    });
+
+    // Mejora: si el usuario pausa manualmente la música, mantener estado
+    music.addEventListener('pause', () => {
+      // Si la pausa fue por falta de permiso (autoplay), no cambiar playing si ya false
+      if (playing) {
+        // si el usuario pausó desde controles nativos, reflejarlo
+        playing = false;
+        updateIcon();
+      }
+    });
+
+    music.addEventListener('play', () => {
+      if (!playing) {
+        playing = true;
+        updateIcon();
+      }
+    });
+
+    // Accesibilidad: permitir play/pause con barra espaciadora cuando el toggle está enfocado
+    toggle.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' || e.key === ' ') {
+        e.preventDefault();
+        toggle.click();
+      }
+    });
+
+    // Nota: los archivos de audio e imagen referenciados (ej. fiesta1.jpg, music-track-a.mp3)
+    // deben existir en el mismo directorio o rutas correctas para que la rotación y el cambio de música funcionen.
+  </script>
 </body>
 </html>
