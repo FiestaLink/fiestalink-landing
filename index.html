@@ -305,6 +305,38 @@
       .example .image-wrap { height: 220px; }
       section h2 { font-size: 1.8rem; }
     }
+
+    #swipe-hint {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      color: #64748b;
+      opacity: 1;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      animation: swipePulse 1.6s infinite;
+    }
+
+    #swipe-hint img {
+      width: 46px;
+      opacity: 0.85;
+    }
+
+    #swipe-hint.hide {
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+    }
+
+    @keyframes swipePulse {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+      100% { transform: translateY(0); }
+    }
+
+
   </style>
 </head>
 
@@ -316,6 +348,11 @@
     <section class="example-section" id="section-inicial" data-music="music.mp3">
       <h2>Invitaciones web para fiestas y bodas</h2>
       <p>100% personalizable<br>Tus fotos y estilo favorito<br>Recibe el primer borrador en 24hrs</p>
+
+      <div id="swipe-hint">
+        <img src="swipe.png" alt="Desliza" />
+        <span>Desliza para ver ejemplos</span>
+      </div>
 
       <div class="example" data-images="kid2n.jpeg, boda1n.jpeg, baby5n.jpeg, kid8.jpeg">
         <div class="image-wrap">
@@ -585,6 +622,17 @@
 
     window.open(url, '_blank');
   });
+
+    const swipeHint = document.getElementById('swipe-hint');
+    let swipeHidden = false;
+
+    main.addEventListener('scroll', () => {
+      if (!swipeHidden && main.scrollTop > 10) {
+        swipeHint.classList.add('hide');
+        swipeHidden = true;
+      }
+    });
+
 
   </script>
 </body>
