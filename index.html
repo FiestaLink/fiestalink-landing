@@ -288,209 +288,56 @@
 
   <button id="music-toggle" aria-pressed="false">🔈</button>
   <div id="track-label" aria-hidden="true">Pista: A</div>
-
+  
   <script>
-    // Elementos principales
     const music = document.getElementById('bg-music');
     const toggle = document.getElementById('music-toggle');
-    const trackLabel = document.getElementById('track-label');
-    const scroller = document.querySelector('main');
-    let playing = false;
+    const main = document.querySelector('main');
+    const sections = document.querySelectorAll('section[data-music]');
 
-    // Volumen por defecto
+    let isPlaying = false;
+    let currentTrack = '';
+
     music.volume = 0.3;
 
-    // Mapa de nombres de pista para mostrar etiqueta (opcional)
-    const trackNames = {
-      'music-track-a.mp3': 'A',
-      'music-track-b.mp3': 'B'
-    };
-
-    // Actualiza icono y aria
-    function updateIcon() {
-      toggle.textContent = playing ? '🔊' : '🔈';
-      toggle.setAttribute('aria-pressed', playing ? 'true' : 'false');
-    }
-
-    // Cambia la fuente del audio (no reproduce si no está en modo playing)
-    function setMusicSource(src) {
-      if (!src) return;
-      // Si ya es la misma fuente, no hacer nada
-      const currentSrc = music.querySelector('source')?.getAttribute('src') || '';
-      if (currentSrc === src) {
-        // actualizar etiqueta
-        trackLabel.textContent = 'Pista: ' + (trackNames[src] || src);
-        return;
-      }
-      // Cambiar source
-      music.pause();
-      music.innerHTML = '';
-      const source = document.createElement('source');
-      source.src = src;
-      source.type = 'audio/mpeg';
-      music.appendChild(source);
-      music.load();
-      trackLabel.textContent = 'Pista: ' + (trackNames[src] || src);
-      // Si el usuario ya activó reproducción, reproducir la nueva pista
-      if (playing) {
-        music.play().catch(() => {});
-      }
-    }
-
-    // Toggle manual
+    // Play / Pause manual
     toggle.addEventListener('click', () => {
-      if (!playing) {
+      if (!isPlaying) {
         music.play().catch(() => {});
-        playing = true;
+        isPlaying = true;
+        toggle.textContent = '🔊';
       } else {
         music.pause();
-        playing = false;
+        isPlaying = false;
+        toggle.textContent = '🔈';
       }
-      updateIcon();
     });
 
-    // Reproducir al primer gesto del usuario (para sortear políticas de autoplay)
-    function startMusicOnce() {
-      if (!playing) {
-        music.play().catch(() => {});
-        playing = true;
-        updateIcon();
-      }
-      removeFirstInteractionListeners();
-    }
+    // Detectar sección visible al hacer scroll
+    main.addEventListener('scroll', () => {
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        const mainRect = main.getBoundingClientRect();
 
-    function removeFirstInteractionListeners() {
-      document.removeEventListener('click', startMusicOnce);
-      window.removeEventListener('wheel', startMusicOnce, { passive: true });
-      scroller.removeEventListener('scroll', startMusicOnce, { passive: true });
-      window.removeEventListener('keydown', startMusicOnce);
-      window.removeEventListener('touchstart', startMusicOnce, { passive: true });
-      window.removeEventListener('touchmove', startMusicOnce, { passive: true });
-      window.removeEventListener('pointerdown', startMusicOnce, { passive: true });
-    }
+        // Si la sección ocupa el centro de la pantalla
+        const sectionCenter = rect.top + rect.height / 2;
+        const mainCenter = mainRect.top + mainRect.height / 2;
 
-    document.addEventListener('click', startMusicOnce, { once: true });
-    window.addEventListener('wheel', startMusicOnce, { once: true, passive: true });
-    scroller.addEventListener('scroll', startMusicOnce, { once: true, passive: true });
-    window.addEventListener('keydown', startMusicOnce, { once: true });
-    window.addEventListener('touchstart', startMusicOnce, { once: true, passive: true });
-    window.addEventListener('touchmove', startMusicOnce, { once: true, passive: true });
-    window.addEventListener('pointerdown', startMusicOnce, { once: true, passive: true });
+        if (Math.abs(sectionCenter - mainCenter) < rect.height / 2) {
+          const newTrack = section.dataset.music;
 
-    updateIcon();
+          if (newTrack && newTrack !== currentTrack) {
+            currentTrack = newTrack;
+            music.src = newTrack;
+            music.load();
 
-    // --- Rotación de imágenes por sección ---
-    const exampleBlocks = document.querySelectorAll('.example');
-
-    exampleBlocks.forEach(block => {
-      const imgWrap = block.querySelector('.image-wrap img');
-      const imagesData = block.dataset.images || '';
-      const images = imagesData.split(',').map(s => s.trim()).filter(Boolean);
-      if (!images.length) return;
-
-      let idx = 0;
-      // Asegurarse de que la imagen inicial exista en la lista
-      imgWrap.src = images[0];
-
-      // Rotación cada 3.5s
-      const interval = setInterval(() => {
-        idx = (idx + 1) % images.length;
-        imgWrap.src = images[idx];
-      }, 3500);
-
-      // Si el elemento se elimina del DOM, limpiar interval (precaución)
-      const observer = new MutationObserver(() => {
-        if (!document.body.contains(block)) {
-          clearInterval(interval);
-          observer.disconnect();
-        }
-      });
-      observer.observe(document.body, { childList: true, subtree: true });
-    });
-
-    // --- Cambio de música según sección visible ---
-    // Regla: las 3 secciones de ejemplos cambian de música; la primera y la última usan la misma pista.
-    // Cada .example-section tiene data-music con el archivo a usar.
-    const exampleSections = document.querySelectorAll('.example-section');
-
-    // IntersectionObserver para detectar sección mayormente visible
-    const observerOptions = {
-      root: scroller,
-      rootMargin: '0px',
-      threshold: [0.5] // cuando al menos 50% visible
-    };
-
-    let currentMusicSrc = music.querySelector('source')?.getAttribute('src') || 'music-track-a.mp3';
-    setMusicSource(currentMusicSrc);
-
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-          const sec = entry.target;
-          const musicSrc = sec.dataset.music || 'music-track-a.mp3';
-          // Cambiar música solo si es diferente
-          if (musicSrc !== currentMusicSrc) {
-            currentMusicSrc = musicSrc;
-            setMusicSource(musicSrc);
-          } else {
-            // actualizar etiqueta aunque sea la misma
-            trackLabel.textContent = 'Pista: ' + (trackNames[musicSrc] || musicSrc);
+            if (isPlaying) {
+              music.play().catch(() => {});
+            }
           }
         }
       });
-    }, observerOptions);
-
-    exampleSections.forEach(s => sectionObserver.observe(s));
-
-    // También, al cargar la página, forzar comprobación de la sección visible
-    // (por si el usuario abre en medio de la página)
-    window.addEventListener('load', () => {
-      // pequeña espera para que el layout esté listo
-      setTimeout(() => {
-        exampleSections.forEach(sec => {
-          const rect = sec.getBoundingClientRect();
-          const mainRect = scroller.getBoundingClientRect();
-          // calcular intersección aproximada con el viewport del scroller
-          const top = Math.max(rect.top, mainRect.top);
-          const bottom = Math.min(rect.bottom, mainRect.bottom);
-          const visibleHeight = Math.max(0, bottom - top);
-          const ratio = visibleHeight / rect.height;
-          if (ratio >= 0.5) {
-            const musicSrc = sec.dataset.music || 'music-track-a.mp3';
-            currentMusicSrc = musicSrc;
-            setMusicSource(musicSrc);
-          }
-        });
-      }, 120);
     });
-
-    // Mejora: si el usuario pausa manualmente la música, mantener estado
-    music.addEventListener('pause', () => {
-      // Si la pausa fue por falta de permiso (autoplay), no cambiar playing si ya false
-      if (playing) {
-        // si el usuario pausó desde controles nativos, reflejarlo
-        playing = false;
-        updateIcon();
-      }
-    });
-
-    music.addEventListener('play', () => {
-      if (!playing) {
-        playing = true;
-        updateIcon();
-      }
-    });
-
-    // Accesibilidad: permitir play/pause con barra espaciadora cuando el toggle está enfocado
-    toggle.addEventListener('keydown', (e) => {
-      if (e.code === 'Space' || e.key === ' ') {
-        e.preventDefault();
-        toggle.click();
-      }
-    });
-
-    // Nota: los archivos de audio e imagen referenciados (ej. fiesta1.jpg, music-track-a.mp3)
-    // deben existir en el mismo directorio o rutas correctas para que la rotación y el cambio de música funcionen.
   </script>
 </body>
 </html>
