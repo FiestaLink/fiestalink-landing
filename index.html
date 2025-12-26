@@ -193,24 +193,33 @@
 
   <button id="music-toggle">🔈</button>
 
-  <script>
-    const music = document.getElementById("bg-music");
-    const toggle = document.getElementById("music-toggle");
-    let playing = false;
-
-    music.volume = 0.3;
-
-    toggle.addEventListener("click", () => {
-      if (!playing) {
-        music.play();
-        toggle.textContent = "🔊 Pausar";
-      } else {
-        music.pause();
-        toggle.textContent = "🔈 Música";
-      }
-      playing = !playing;
-    });
-  </script>
+<script> 
+  const music = document.getElementById("bg-music"); 
+  const toggle = document.getElementById("music-toggle"); 
+  let playing = false; 
+  music.volume = 0.3; // Cambiar icono según estado 
+  
+  function updateIcon() { 
+    toggle.textContent = playing ? "🔊" : "🔈"; } 
+    
+    toggle.addEventListener("click", () => { 
+      if (!playing) { 
+        music.play(); 
+        playing = true; 
+      } else { 
+        music.pause(); 
+        playing = false; 
+      } 
+      updateIcon(); 
+    }); // Primera interacción en la página → activar música 
+    // 
+    document.body.addEventListener("click", () => { 
+      if (!playing) { 
+        music.play(); 
+        playing = true; 
+        updateIcon(); 
+      } 
+    }, { once: true }); // solo la primera vez 
 
 </body>
 </html>
