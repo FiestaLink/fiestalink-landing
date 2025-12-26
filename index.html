@@ -223,7 +223,7 @@
     </section>
 
     <!-- Sección: Fiesta (ejemplos) -->
-    <section class="example-section" id="section-fiesta" data-music="music-track-a.mp3">
+    <section class="example-section" id="section-fiesta" data-music="music.mp3">
       <h2>Fiesta Infantil o fiesta temática</h2>
 
       <div class="example" data-images="fiesta1.jpg,fiesta2.jpg,fiesta3.jpg">
@@ -239,7 +239,7 @@
     </section>
 
     <!-- Sección: Baby Shower (ejemplos) -->
-    <section class="example-section" id="section-baby" data-music="music-track-b.mp3">
+    <section class="example-section" id="section-baby" data-music="music.mp3">
       <h2>Baby Shower o Bautizo</h2>
 
       <div class="example" data-images="baby1.jpg,baby2.jpg,baby3.jpg">
@@ -255,7 +255,7 @@
     </section>
 
     <!-- Sección: Boda (ejemplos) -->
-    <section class="example-section" id="section-boda" data-music="music-track-a.mp3">
+    <section class="example-section" id="section-boda" data-music="music.mp3">
       <h2>Boda</h2>
 
       <div class="example" data-images="boda1.jpg,boda2.jpg,boda3.jpg">
@@ -283,12 +283,12 @@
 
   <!-- Música (un solo elemento que cambia de fuente según sección) -->
   <audio id="bg-music" loop preload="auto">
-    <source src="music-track-a.mp3" type="audio/mpeg">
+    <source src="music.mp3" type="audio/mpeg">
   </audio>
 
   <button id="music-toggle" aria-pressed="false">🔈</button>
   <div id="track-label" aria-hidden="true">Pista: A</div>
-  
+
   <script>
     const music = document.getElementById('bg-music');
     const toggle = document.getElementById('music-toggle');
