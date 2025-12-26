@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FiestaLink Landing</title>
-  <!-- Fuente moderna desde Google Fonts -->
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
     * {
       margin: 0;
@@ -20,14 +21,13 @@
       color: #333;
     }
 
-    /* Header fijo */
     header {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 70px;
-      background: linear-gradient(90deg, #3b82f6, #60a5fa); /* azul */
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
       color: white;
       display: flex;
       align-items: center;
@@ -39,14 +39,13 @@
       letter-spacing: 1px;
     }
 
-    /* Footer fijo */
     footer {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
       height: 70px;
-      background: linear-gradient(90deg, #3b82f6, #60a5fa); /* azul */
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -57,7 +56,7 @@
       padding: 12px 28px;
       font-size: 1.1rem;
       background: white;
-      color: #3b82f6; /* azul */
+      color: #3b82f6;
       border: none;
       border-radius: 30px;
       cursor: pointer;
@@ -67,11 +66,10 @@
     }
 
     footer button:hover {
-      background-color: #e0f2fe; /* azul muy claro */
+      background-color: #e0f2fe;
       transform: scale(1.05);
     }
 
-    /* Sección central scrollable */
     main {
       position: absolute;
       top: 70px;
@@ -81,7 +79,7 @@
       overflow-y: scroll;
       scroll-snap-type: y mandatory;
       scroll-behavior: smooth;
-      background: linear-gradient(to bottom, #fff, #f0f9ff); /* fondo azul claro */
+      background: linear-gradient(to bottom, #fff, #f0f9ff);
     }
 
     section {
@@ -98,7 +96,7 @@
     section h2 {
       font-size: 2.4rem;
       margin-bottom: 20px;
-      color: #2563eb; /* azul más oscuro para títulos */
+      color: #2563eb;
       font-weight: 700;
     }
 
@@ -109,15 +107,14 @@
       color: #555;
     }
 
-    /* Caja de descuento */
     .discount {
-      background: linear-gradient(135deg, #dbeafe, #bfdbfe); /* azul claro */
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
       border-radius: 15px;
       padding: 50px 30px;
       margin-top: 30px;
       font-size: 1.4rem;
       font-weight: bold;
-      color: #1e40af; /* azul fuerte */
+      color: #1e40af;
       box-shadow: 0 6px 12px rgba(0,0,0,0.1);
       animation: pulse 2s infinite;
     }
@@ -127,8 +124,25 @@
       50% { transform: scale(1.03); }
       100% { transform: scale(1); }
     }
+
+    /* Botón de música */
+    #music-toggle {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      z-index: 2000;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
+
 <body>
 
   <header>
@@ -171,6 +185,32 @@
   <footer>
     <button>Solicitar invitación</button>
   </footer>
+
+  <!-- Música -->
+  <audio id="bg-music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <button id="music-toggle">🔈 Música</button>
+
+  <script>
+    const music = document.getElementById("bg-music");
+    const toggle = document.getElementById("music-toggle");
+    let playing = false;
+
+    music.volume = 0.3;
+
+    toggle.addEventListener("click", () => {
+      if (!playing) {
+        music.play();
+        toggle.textContent = "🔊 Pausar";
+      } else {
+        music.pause();
+        toggle.textContent = "🔈 Música";
+      }
+      playing = !playing;
+    });
+  </script>
 
 </body>
 </html>
