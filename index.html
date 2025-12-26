@@ -191,20 +191,6 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
 
-    /* Indicador pequeño de pista */
-    #track-label {
-      position: fixed;
-      bottom: 140px;
-      right: 20px;
-      background: rgba(0,0,0,0.6);
-      color: white;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      z-index: 2000;
-      pointer-events: none;
-    }
-
     @media (max-width: 600px) {
       .example .image-wrap { height: 220px; }
       section h2 { font-size: 1.8rem; }
@@ -292,7 +278,6 @@
   </audio>
 
   <button id="music-toggle" aria-pressed="false">🔈</button>
-  <div id="track-label" aria-hidden="true">Pista: A</div>
 
   <script>
     const music = document.getElementById('bg-music');
