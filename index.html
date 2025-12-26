@@ -421,6 +421,24 @@
     }, 1800);
   });
 
+  let unlocked = false;
+
+  function unlockAudio() {
+    if (unlocked) return;
+
+    music.play().then(() => {
+      music.pause();
+      unlocked = true;
+      console.log('Audio desbloqueado');
+    }).catch(() => {});
+
+    document.removeEventListener('click', unlockAudio);
+    document.removeEventListener('touchstart', unlockAudio);
+  }
+
+  document.addEventListener('click', unlockAudio);
+  document.addEventListener('touchstart', unlockAudio);
+
   </script>
 </body>
 </html>
