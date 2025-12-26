@@ -275,8 +275,20 @@
     }
 
     #send-whatsapp {
-      background: #22c55e;
+      background: linear-gradient(90deg, #2563eb, #3b82f6);
       color: white;
+      box-shadow: 0 6px 12px rgba(37,99,235,0.25);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    #send-whatsapp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(37,99,235,0.35);
+    }
+    .modal-note {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-bottom: 18px;
     }
 
     .modal-actions .cancel {
@@ -368,6 +380,9 @@
       <div id="invite-modal" class="modal hidden">
         <div class="modal-content">
           <h3>Solicitar invitación</h3>
+          <p class="modal-note">
+            (Se abrirá WhatsApp para enviar su solicitud)
+          </p>
 
           <label for="invite-type">Tipo de invitación</label>
           <select id="invite-type" required>
@@ -380,7 +395,7 @@
           </select>
 
           <div class="modal-actions">
-            <button id="send-whatsapp">Enviar por WhatsApp</button>
+            <button id="send-whatsapp">Enviar solicitud</button>
             <button class="cancel">Cancelar</button>
           </div>
         </div>
@@ -559,13 +574,17 @@
       return;
     }
 
+    // Apagar música antes de salir
+    music.pause();
+    music.currentTime = 0;
+    isPlaying = false;
+    toggle.textContent = '🔈';
+
     const message = `FiestaLink, me interesa invitación web para ${value}`;
     const url = `https://wa.me/5549250538?text=${encodeURIComponent(message)}`;
 
     window.open(url, '_blank');
   });
-
-
 
   </script>
 </body>
