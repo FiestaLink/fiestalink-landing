@@ -216,6 +216,77 @@
     .image-wrap img.exit {
       transform: translateX(-100%);
     }
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px 24px;
+      border-radius: 16px;
+      width: min(90%, 360px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      animation: fadeUp .25s ease;
+    }
+
+    .modal-content h3 {
+      margin-bottom: 20px;
+      color: #2563eb;
+    }
+
+    .modal-content label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .modal-content select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 1rem;
+    }
+
+    .modal-actions {
+      margin-top: 24px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .modal-actions button {
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    #send-whatsapp {
+      background: #22c55e;
+      color: white;
+    }
+
+    .modal-actions .cancel {
+      background: #e5e7eb;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
 
     @media (max-width: 600px) {
@@ -290,6 +361,28 @@
         <div class="links">
           <a href="#ejemplo-boda-1" title="Ejemplo 1">Ejemplo 1</a>
           <a href="#ejemplo-boda-2" title="Ejemplo 2">Ejemplo 2</a>
+        </div>
+      </div>
+    
+      <!-- Modal formulario -->
+      <div id="invite-modal" class="modal hidden">
+        <div class="modal-content">
+          <h3>Solicitar invitación</h3>
+
+          <label for="invite-type">Tipo de invitación</label>
+          <select id="invite-type" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option>Fiesta infantil</option>
+            <option>Reunión temática</option>
+            <option>Baby shower</option>
+            <option>Bautizo</option>
+            <option>Boda</option>
+          </select>
+
+          <div class="modal-actions">
+            <button id="send-whatsapp">Enviar por WhatsApp</button>
+            <button class="cancel">Cancelar</button>
+          </div>
         </div>
       </div>
     </section>
@@ -443,6 +536,36 @@
 
   document.addEventListener('click', unlockAudio);
   document.addEventListener('touchstart', unlockAudio);
+
+
+  const inviteBtn = document.querySelector('footer button');
+  const modal = document.getElementById('invite-modal');
+  const cancelBtn = modal.querySelector('.cancel');
+  const sendBtn = document.getElementById('send-whatsapp');
+  const select = document.getElementById('invite-type');
+
+  inviteBtn.addEventListener('click', () => {
+    modal.classList.remove('hidden');
+  });
+
+  cancelBtn.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+
+  sendBtn.addEventListener('click', () => {
+    const value = select.value;
+    if (!value) {
+      alert('Selecciona un tipo de invitación');
+      return;
+    }
+
+    const message = `FiestaLink, me interesa invitación web para ${value}`;
+    const url = `https://wa.me/5549250538?text=${encodeURIComponent(message)}`;
+
+    window.open(url, '_blank');
+  });
+
+
 
   </script>
 </body>
