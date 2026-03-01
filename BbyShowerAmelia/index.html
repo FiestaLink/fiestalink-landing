@@ -203,12 +203,12 @@
       span.classList.add('floaters');
       span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
       span.style.left = Math.random() * 90 + 'vw';
-      span.style.animationDuration = 15 + Math.random() * 15 + 's'; // sube mucho más lento
+      span.style.animationDuration = 25 + Math.random() * 25 + 's'; // sube mucho más lento
       containerBody.appendChild(span);
       setTimeout(() => { span.remove(); }, 30000);
     }
 
-    setInterval(createFloater, 2000); // cada 2 segundos aparece un flotador
+    setInterval(createFloater, 3000); // cada 2 segundos aparece un flotador
   </script>
 
 </body>
