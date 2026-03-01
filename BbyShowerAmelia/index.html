@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; overflow: hidden; font-family: 'Playfair Display', serif; }
+    html, body { height: 100%; overflow: hidden; font-family: 'Playfair Display', serif; background: #fff; }
 
     .container {
       height: 100%;
@@ -24,36 +24,44 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-size: 1.8em;
       text-align: center;
       padding: 20px;
-      background: #ffd1dc; /* Rosa pastel */
-      color: #4a4a4a;
+      position: relative;
+      color: #d87fae; /* Rosa claro para texto */
+      background: #fff;
     }
 
-    #welcome {
-      font-size: 1.2em;
+    /* Cintas superior e inferior */
+    section::before,
+    section::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      background: #f67280; /* Rosa más fuerte */
     }
+    section::before { top: 0; }
+    section::after { bottom: 0; }
 
-    #welcome h1 {
-      font-size: 3em;
-      margin: 10px 0;
-    }
+    /* Tipos de texto según importancia */
+    #welcome div { font-size: 1.2em; margin-bottom: 10px; }
+    #welcome h1 { font-size: 3em; margin: 10px 0; font-weight: 700; }
+    #welcome div:last-child { font-size: 1.5em; }
 
-    #location { font-size: 1.5em; }
-    #gifts { font-size: 1.3em; }
+    #message { font-size: 1.5em; }
+
+    #location { font-size: 1.4em; }
+    #location ul { margin-top: 10px; text-align: left; list-style: disc; padding-left: 20px; }
+    #location li { margin-bottom: 5px; }
+
+    #gifts { font-size: 1.3em; line-height: 1.5em; }
+
     #rsvp { font-size: 1.5em; }
+    .countdown { margin-top: 15px; font-size: 1.2em; font-weight: bold; }
 
-    a { color: #d6336c; text-decoration: underline; }
+    a { color: #d87fae; text-decoration: underline; }
 
-    .countdown {
-      margin-top: 20px;
-      font-size: 1.2em;
-      font-weight: bold;
-    }
-
-    ul { margin-top: 10px; text-align: left; }
-    li { margin-bottom: 5px; }
   </style>
 </head>
 <body>
