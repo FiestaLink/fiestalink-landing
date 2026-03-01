@@ -1,108 +1,95 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Baby Shower Amelia</title>
-
-  <!-- Fuente -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    /* Reset básico */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: sans-serif;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      overflow-y: scroll;
+    /* Contenedor principal */
+    .container {
+      height: 100%;
+      width: 100%;
       scroll-snap-type: y mandatory;
+      overflow-y: scroll;
     }
 
+    /* Cada pantalla */
     section {
       height: 100vh;
       width: 100%;
       scroll-snap-align: start;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
+      font-size: 2em;
       text-align: center;
-      padding: 20px;
     }
 
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
+    /* Colores diferentes para distinguir */
+    #welcome { background: #f8b195; color: #fff; }
+    #message { background: #f67280; color: #fff; }
+    #location { background: #c06c84; color: #fff; }
+    #gifts { background: #6c5b7b; color: #fff; }
+    #rsvp { background: #355c7d; color: #fff; }
 
-    p {
-      font-size: 1.1rem;
-      max-width: 300px;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 12px 20px;
+    /* Botones de navegación */
+    .nav-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.7);
       border: none;
-      border-radius: 30px;
-      font-size: 1rem;
+      padding: 10px 15px;
+      font-size: 1em;
+      border-radius: 8px;
       cursor: pointer;
     }
-
-    /* Colores temporales para diferenciar pantallas */
-    #bienvenida { background: #ffeef5; }
-    #mensaje { background: #fff6e5; }
-    #evento { background: #e8f7ff; }
-    #regalos { background: #f4eaff; }
-    #confirmacion { background: #eaffea; }
-
   </style>
 </head>
 <body>
 
-  <!-- 1. Bienvenida -->
-  <section id="bienvenida">
-    <h1>Baby Shower Amelia</h1>
-    <p>Te invitamos a celebrar la llegada de nuestra pequeña.</p>
-  </section>
+  <div class="container">
+    <section id="welcome">Bienvenida<br>Baby Shower Amelia</section>
+    <section id="message">Mensaje de amor + Foto</section>
+    <section id="location">Lugar y fecha del evento</section>
+    <section id="gifts">Mesa de regalos</section>
+    <section id="rsvp">Confirma tu asistencia</section>
+  </div>
 
-  <!-- 2. Mensaje y Foto -->
-  <section id="mensaje">
-    <h1>Un mensaje de amor</h1>
-    <p>Amelia está por llegar y queremos compartir esta felicidad contigo.</p>
-    <!-- Aquí luego pondremos la foto -->
-  </section>
-
-  <!-- 3. Lugar y Fecha -->
-  <section id="evento">
-    <h1>Lugar & Fecha</h1>
-    <p>Fecha aquí</p>
-    <p>Lugar aquí</p>
-  </section>
-
-  <!-- 4. Mesa de regalos -->
-  <section id="regalos">
-    <h1>Mesa de Regalos</h1>
-    <p>Próximamente información.</p>
-  </section>
-
-  <!-- 5. Confirmación -->
-  <section id="confirmacion">
-    <h1>Confirma tu asistencia</h1>
-    <button onclick="confirmarAsistencia()">Confirmar</button>
-  </section>
+  <button class="nav-btn" id="nextBtn">Siguiente</button>
 
   <script>
-    function confirmarAsistencia() {
-      alert("Gracias por confirmar 💕");
-    }
+    const sections = document.querySelectorAll('section');
+    const nextBtn = document.getElementById('nextBtn');
+    let current = 0;
+
+    nextBtn.addEventListener('click', () => {
+      current++;
+      if(current >= sections.length) current = sections.length - 1;
+      sections[current].scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Opcional: scroll con wheel o touch
+    let isScrolling = false;
+    document.querySelector('.container').addEventListener('wheel', (e) => {
+      if(isScrolling) return;
+      isScrolling = true;
+      if(e.deltaY > 0) current++;
+      else current--;
+      if(current < 0) current = 0;
+      if(current >= sections.length) current = sections.length - 1;
+      sections[current].scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => { isScrolling = false; }, 500);
+    });
   </script>
 
 </body>
