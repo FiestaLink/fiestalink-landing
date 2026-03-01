@@ -31,23 +31,24 @@
       background: #fff;
     }
 
-    /* Cintas superior e inferior */
+    /* Cintas superior e inferior más gruesas */
     section::before,
     section::after {
       content: "";
       position: absolute;
       left: 0;
       width: 100%;
-      height: 30px;
-      background: #f67280; /* Rosa más fuerte */
+      height: 50px; /* Más gruesa */
+      background: #f67280; /* Rosa fuerte */
     }
     section::before { top: 0; }
     section::after { bottom: 0; }
 
     /* Tipos de texto según importancia */
-    #welcome div { font-size: 1.2em; margin-bottom: 10px; }
-    #welcome h1 { font-size: 3em; margin: 10px 0; font-weight: 700; }
-    #welcome div:last-child { font-size: 1.5em; }
+    #welcome div:first-child { font-size: 1.2em; margin-bottom: 10px; } /* Texto invitación */
+    #welcome h1 { font-size: 4em; margin: 10px 0; font-weight: 700; } /* Amelia más grande */
+    #welcome div:last-child { font-size: 1em; margin-top: 10px; } /* "Mi mamá y mi papá" más pequeño */
+    #welcome div .parents { font-size: 2em; font-weight: 700; } /* Nombres de papás más grandes */
 
     #message { font-size: 1.5em; }
 
@@ -70,7 +71,10 @@
     <section id="welcome">
       <div>Te invitamos a celebrar el <br>Baby Shower de</div>
       <h1>Amelia</h1>
-      <div>Mi mamá y mi papá: Ale & Antonio ❤️</div>
+      <div>
+        <div>Mi mamá y mi papá ❤️</div>
+        <div class="parents">Ale & Antonio</div>
+      </div>
     </section>
 
     <section id="message">
