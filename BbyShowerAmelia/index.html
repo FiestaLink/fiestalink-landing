@@ -9,7 +9,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; overflow: hidden; font-family: 'Playfair Display', serif; background: #fff; }
 
-    /* Cintas fijas */
+    /* Cintas fijas arriba y abajo */
     .ribbon-top, .ribbon-bottom {
       position: fixed;
       left: 0;
@@ -59,10 +59,12 @@
     #location ul { margin-top: 10px; text-align: left; list-style: disc; padding-left: 20px; }
     #location li { margin-bottom: 5px; }
 
-    #gifts { font-size: 1.3em; line-height: 1.5em; }
+    #gifts { font-size: 1.3em; line-height: 1.5em; text-align: justify; max-width: 90%; }
+    #gifts h2 { font-size: 2.5em; margin-bottom: 15px; }
 
     #rsvp { font-size: 1.5em; }
     .countdown { margin-top: 15px; font-size: 1.2em; font-weight: bold; }
+    .confirm-link { display: inline-block; margin-bottom: 15px; font-weight: bold; color: #d87fae; cursor: pointer; text-decoration: underline; }
 
     a { color: #d87fae; text-decoration: underline; }
   </style>
@@ -75,7 +77,7 @@
 
   <div class="container">
     <section id="welcome">
-      <div><br>Baby Shower<br></div>
+      <div>Te invitamos al<br>Baby Shower<br>de</div>
       <h1>Amelia</h1>
       <div class="last">
         Mi mamá y mi papá ❤️<br>
@@ -102,19 +104,25 @@
     </section>
 
     <section id="gifts">
-      Mesa de regalos en Amazon:<br>
+      <h2>Mesa de regalos</h2>
       <a href="https://www.amazon.com.mx/baby-reg/alejandraxochitl-cruz-mayo-2026-ciudaddemexico/1S3AGCO8YC7ZW?ref_=cm_sw_r_cp_ud_dp_EPGETXC9SPABYMQ1GT1Q_1" target="_blank">Ver mesa de regalos</a><br><br>
       La mesa de regalos es para sugerencias, pero si quieres darnos algo, puedes regalarnos lo que tú prefieras.<br>
       Si encuentras una mejor opción, más económica o de segunda mano en otro lugar, es muy bienvenido, sólo avísanos que ya lo compraste para quitarlo de la lista.
     </section>
 
     <section id="rsvp">
+      <div class="confirm-link" onclick="confirmPopup()">Confirma aquí</div>
       Confirma tu asistencia porfa 🙏<br>
       <div class="countdown" id="countdown"></div>
     </section>
   </div>
 
   <script>
+    // Pop-up confirm
+    function confirmPopup() {
+      alert("Gracias por confirmar tu asistencia 😊");
+    }
+
     // Contador / cronómetro hasta el evento
     const countdownEl = document.getElementById('countdown');
     const eventDate = new Date("March 29, 2026 15:00:00").getTime();
