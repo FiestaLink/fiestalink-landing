@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Baby Shower Amelia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; overflow: hidden; font-family: sans-serif; }
+    html, body { height: 100%; overflow: hidden; font-family: 'Playfair Display', serif; }
 
     .container {
       height: 100%;
@@ -26,29 +27,42 @@
       font-size: 1.8em;
       text-align: center;
       padding: 20px;
-      color: #fff;
+      background: #ffd1dc; /* Rosa pastel */
+      color: #4a4a4a;
     }
 
-    #welcome { background: #f8b195; }
-    #message { background: #f67280; }
-    #location { background: #c06c84; font-size: 1.5em; }
-    #gifts { background: #6c5b7b; font-size: 1.3em; }
-    #rsvp { background: #355c7d; font-size: 1.5em; }
+    #welcome {
+      font-size: 1.2em;
+    }
 
-    a { color: #ffd; text-decoration: underline; }
+    #welcome h1 {
+      font-size: 3em;
+      margin: 10px 0;
+    }
+
+    #location { font-size: 1.5em; }
+    #gifts { font-size: 1.3em; }
+    #rsvp { font-size: 1.5em; }
+
+    a { color: #d6336c; text-decoration: underline; }
 
     .countdown {
       margin-top: 20px;
       font-size: 1.2em;
       font-weight: bold;
     }
+
+    ul { margin-top: 10px; text-align: left; }
+    li { margin-bottom: 5px; }
   </style>
 </head>
 <body>
 
   <div class="container">
     <section id="welcome">
-      ¡Bienvenida!<br>Baby Shower de bebé Amelia
+      <div>Te invitamos a celebrar el <br>Baby Shower de</div>
+      <h1>Amelia</h1>
+      <div>Mi mamá y mi papá: Ale & Antonio ❤️</div>
     </section>
 
     <section id="message">
@@ -56,18 +70,24 @@
     </section>
 
     <section id="location">
-      Fecha: Domingo 29 de marzo de 2026<br>
+      📍 Fecha: Domingo 29 de marzo de 2026<br>
       Hora: 3:00 PM<br>
       Lugar: CDMX, Restaurante El Refugio del Inca<br>
-      <a href="https://maps.app.goo.gl/HwVX4MYUh9QWFVJF6" target="_blank">Ver en Google Maps</a><br>
-      Habrá comida Peruana<br>
-      Venta de Drinks
+      <a href="https://maps.app.goo.gl/HwVX4MYUh9QWFVJF6" target="_blank">Ver en Google Maps</a>
+      <div style="margin-top:15px; text-align:left;">
+        Habrá:
+        <ul>
+          <li>Comida Peruana</li>
+          <li>Venta de Drinks</li>
+        </ul>
+      </div>
     </section>
 
     <section id="gifts">
       Mesa de regalos en Amazon:<br>
-      <a href="https://www.amazon.com.mx/baby-reg/alejandraxochitl-cruz-mayo-2026-ciudaddemexico/1S3AGCO8YC7ZW?ref_=cm_sw_r_cp_ud_dp_EPGETXC9SPABYMQ1GT1Q_1" target="_blank">Ver mesa de regalos</a><br>
-      La mesa de regalos es solo sugerencia, si quieres darnos algo diferente, ¡perfecto! Solo avísanos.
+      <a href="https://www.amazon.com.mx/baby-reg/alejandraxochitl-cruz-mayo-2026-ciudaddemexico/1S3AGCO8YC7ZW?ref_=cm_sw_r_cp_ud_dp_EPGETXC9SPABYMQ1GT1Q_1" target="_blank">Ver mesa de regalos</a><br><br>
+      La mesa de regalos es para sugerencias, pero si quieres darnos algo, puedes regalarnos lo que tú prefieras.<br>
+      Si encuentras una mejor opción, más económica o de segunda mano en otro lugar, es muy bienvenido, sólo avísanos que ya lo compraste para quitarlo de la lista.
     </section>
 
     <section id="rsvp">
