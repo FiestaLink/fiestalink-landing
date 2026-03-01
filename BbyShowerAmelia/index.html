@@ -21,11 +21,14 @@
     .ribbon-top { top: 0; }
     .ribbon-bottom { bottom: 0; }
 
+    /* Contenedor scroll por pantalla */
     .container {
       height: 100%;
       width: 100%;
       scroll-snap-type: y mandatory;
       overflow-y: scroll;
+      position: relative;
+      z-index: 1; /* para que los flotadores queden sobre las cintas pero debajo del contenido */
     }
 
     section {
@@ -43,21 +46,21 @@
       background: #fff;
     }
 
-    /* Tipos de texto según importancia y saltos compactos */
+    /* Saltos de línea más separados */
     #welcome div.first-line { 
       font-size: 1.2em; 
-      margin: 5px 0;           /* Margen vertical más pequeño */
-      line-height: 1.0em;      /* Salto de línea compacto */
+      margin: 15px 0;           /* Margen vertical aumentado */
+      line-height: 1.2em;       
     }
     #welcome div.middle { 
       font-size: 2em; 
-      margin: 5px 0; 
-      line-height: 1.0em; 
+      margin: 15px 0; 
+      line-height: 1.2em; 
     } 
     #welcome h1 { 
       font-size: 4em; 
-      margin: 5px 0; 
-      line-height: 1.0em; 
+      margin: 15px 0; 
+      line-height: 1.2em; 
       font-weight: 700; 
     }
     #welcome div.last { font-size: 1em; margin-top: 10px; }
@@ -77,6 +80,21 @@
     .confirm-link { display: inline-block; margin-bottom: 15px; font-weight: bold; color: #d87fae; cursor: pointer; text-decoration: underline; }
 
     a { color: #d87fae; text-decoration: underline; }
+
+    /* Decoración: flotadores de bebé */
+    .floaters {
+      position: fixed;
+      bottom: -50px;
+      font-size: 2em;
+      pointer-events: none;
+      animation: floatUp linear infinite;
+      z-index: 5;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -175,6 +193,22 @@
       sections[current].scrollIntoView({ behavior: 'smooth' });
       setTimeout(() => { isScrolling = false; }, 500);
     });
+
+    // Decoración: ositos y elementos flotantes
+    const emojis = ['🧸','🍼','🌸','⭐','👶'];
+    const containerBody = document.body;
+
+    function createFloater() {
+      const span = document.createElement('span');
+      span.classList.add('floaters');
+      span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      span.style.left = Math.random() * 90 + 'vw';
+      span.style.animationDuration = 5 + Math.random() * 5 + 's';
+      containerBody.appendChild(span);
+      setTimeout(() => { span.remove(); }, 10000);
+    }
+
+    setInterval(createFloater, 800);
   </script>
 
 </body>
