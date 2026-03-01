@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baby Shower Amelia</title>
+
+  <!-- Fuente -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+    }
+
+    section {
+      height: 100vh;
+      width: 100%;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      max-width: 300px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    /* Colores temporales para diferenciar pantallas */
+    #bienvenida { background: #ffeef5; }
+    #mensaje { background: #fff6e5; }
+    #evento { background: #e8f7ff; }
+    #regalos { background: #f4eaff; }
+    #confirmacion { background: #eaffea; }
+
+  </style>
+</head>
+<body>
+
+  <!-- 1. Bienvenida -->
+  <section id="bienvenida">
+    <h1>Baby Shower Amelia</h1>
+    <p>Te invitamos a celebrar la llegada de nuestra pequeña.</p>
+  </section>
+
+  <!-- 2. Mensaje y Foto -->
+  <section id="mensaje">
+    <h1>Un mensaje de amor</h1>
+    <p>Amelia está por llegar y queremos compartir esta felicidad contigo.</p>
+    <!-- Aquí luego pondremos la foto -->
+  </section>
+
+  <!-- 3. Lugar y Fecha -->
+  <section id="evento">
+    <h1>Lugar & Fecha</h1>
+    <p>Fecha aquí</p>
+    <p>Lugar aquí</p>
+  </section>
+
+  <!-- 4. Mesa de regalos -->
+  <section id="regalos">
+    <h1>Mesa de Regalos</h1>
+    <p>Próximamente información.</p>
+  </section>
+
+  <!-- 5. Confirmación -->
+  <section id="confirmacion">
+    <h1>Confirma tu asistencia</h1>
+    <button onclick="confirmarAsistencia()">Confirmar</button>
+  </section>
+
+  <script>
+    function confirmarAsistencia() {
+      alert("Gracias por confirmar 💕");
+    }
+  </script>
+
+</body>
+</html>
