@@ -28,7 +28,7 @@
       scroll-snap-type: y mandatory;
       overflow-y: scroll;
       position: relative;
-      z-index: 1; /* para que los flotadores queden sobre las cintas pero debajo del contenido */
+      z-index: 1;
     }
 
     section {
@@ -46,24 +46,24 @@
       background: #fff;
     }
 
-    /* Saltos de línea más separados */
+    /* Ajuste interlineado intermedio */
     #welcome div.first-line { 
       font-size: 1.2em; 
-      margin: 15px 0;           /* Margen vertical aumentado */
-      line-height: 1.2em;       
+      margin: 12px 0;           
+      line-height: 1.3em;       
     }
     #welcome div.middle { 
       font-size: 2em; 
-      margin: 15px 0; 
-      line-height: 1.2em; 
+      margin: 12px 0; 
+      line-height: 1.3em; 
     } 
     #welcome h1 { 
       font-size: 4em; 
-      margin: 15px 0; 
+      margin: 12px 0; 
       line-height: 1.2em; 
       font-weight: 700; 
     }
-    #welcome div.last { font-size: 1em; margin-top: 10px; }
+    #welcome div.last { font-size: 1em; margin-top: 8px; }
     #welcome div.last .parents { font-size: 2em; font-weight: 700; }
 
     #message { font-size: 1.5em; }
@@ -81,7 +81,7 @@
 
     a { color: #d87fae; text-decoration: underline; }
 
-    /* Decoración: flotadores de bebé */
+    /* Decoración: flotadores de bebé más lentos y sutiles */
     .floaters {
       position: fixed;
       bottom: -50px;
@@ -194,7 +194,7 @@
       setTimeout(() => { isScrolling = false; }, 500);
     });
 
-    // Decoración: ositos y elementos flotantes
+    // Decoración: ositos y elementos flotantes más suaves
     const emojis = ['🧸','🍼','🌸','⭐','👶'];
     const containerBody = document.body;
 
@@ -203,12 +203,12 @@
       span.classList.add('floaters');
       span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
       span.style.left = Math.random() * 90 + 'vw';
-      span.style.animationDuration = 5 + Math.random() * 5 + 's';
+      span.style.animationDuration = 15 + Math.random() * 15 + 's'; // sube mucho más lento
       containerBody.appendChild(span);
-      setTimeout(() => { span.remove(); }, 10000);
+      setTimeout(() => { span.remove(); }, 30000);
     }
 
-    setInterval(createFloater, 800);
+    setInterval(createFloater, 2000); // cada 2 segundos aparece un flotador
   </script>
 
 </body>
