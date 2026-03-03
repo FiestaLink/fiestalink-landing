@@ -193,21 +193,11 @@
       box-shadow: 0 15px 35px rgba(0,0,0,0.25);
       border: 6px solid #dbe8d3;
     }
-
-    .slide {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transform: translateX(-100%);
-      transition: all 1.5s ease;
-      filter: contrast(105%) saturate(105%);
-    }
+    
+    .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.5s ease; }
 
     .slide.active {
       opacity: 1;
-      transform: translateX(0);
     }
     .highlight-parents {
       font-family: 'Great Vibes', cursive;
@@ -325,15 +315,9 @@
 
     setInterval(() => {
       slides[current].classList.remove("active");
-      slides[current].style.transform = "translateX(100%)";
-
       current = (current + 1) % slides.length;
 
-      slides[current].style.transform = "translateX(-100%)";
-      setTimeout(() => {
-        slides[current].classList.add("active");
-      }, 100);
-
+      slides[current].classList.add("active");
     }, 4000);
   </script>
 
