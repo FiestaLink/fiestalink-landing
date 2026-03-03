@@ -1,280 +1,177 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Baby Shower Amelia</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baby Shower Amelia</title>
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 
-    html, body {
-      height: 100%;
-      overflow: hidden;
-      font-family: 'Playfair Display', serif;
-      background: #F4F1EA;
-      color: #3E5F4C;
-    }
+<style>
 
-    /* 🎬 VIÑETA CINEMATOGRÁFICA */
-    body::after {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      background: radial-gradient(circle at center, rgba(0,0,0,0) 55%, rgba(0,0,0,0.25) 100%);
-      z-index: 2;
-    }
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #e8f1e4, #d8e6d3);
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  color: #2f3e2e;
+  overflow-x: hidden;
+}
 
-    /* Cintas */
-    .ribbon-top, .ribbon-bottom {
-      position: fixed;
-      left: 0;
-      width: 100%;
-      height: 55px;
-      background: #1F2A24;
-      z-index: 10;
-    }
-    .ribbon-top { top: 0; }
-    .ribbon-bottom { bottom: 0; }
+.container {
+  padding: 40px 20px;
+  max-width: 600px;
+  margin: auto;
+}
 
-    .container {
-      height: 100%;
-      width: 100%;
-      scroll-snap-type: y mandatory;
-      overflow-y: scroll;
-      position: relative;
-      z-index: 1;
-    }
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
 
-    section {
-      height: 100vh;
-      width: 100%;
-      scroll-snap-align: start;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-      background: #F4F1EA;
-    }
+h2 {
+  font-weight: 300;
+  margin-top: 0;
+  margin-bottom: 30px;
+}
 
-    /* Welcome */
-    #welcome div.first-line {
-      font-size: 1.2em;
-      margin: 12px 0;
-      line-height: 1.3em;
-      color: #6B8E6E;
-    }
+.section {
+  margin: 40px 0;
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
 
-    #welcome div.middle {
-      font-size: 2.2em;
-      margin: 12px 0;
-      color: #3E5F4C;
-    }
+.mesa-regalos {
+  margin-top: 40px;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+}
 
-    #welcome h1 {
-      font-size: 4.2em;
-      margin: 12px 0;
-      font-weight: 700;
-      color: #1F2A24;
-      position: relative;
-    }
+/* SLIDESHOW ARTÍSTICO */
+.slideshow {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: 40px auto 0;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+  border: 6px solid #dbe8d3;
+}
 
-    /* ✨ Línea artística debajo de Amelia */
-    #welcome h1::after {
-      content: "";
-      display: block;
-      width: 120px;
-      height: 2px;
-      background: #C2A85C;
-      margin: 12px auto 0;
-    }
+.slideshow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(40,60,40,0.1);
+  mix-blend-mode: multiply;
+}
 
-    #welcome div.last {
-      font-size: 1em;
-      margin-top: 8px;
-      color: #6B8E6E;
-    }
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: all 1.5s ease;
+  filter: contrast(105%) saturate(105%);
+}
 
-    #welcome .parents {
-      font-size: 2em;
-      font-weight: 700;
-      color: #3E5F4C;
-    }
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+}
 
-    #message {
-      font-size: 1.6em;
-      color: #3E5F4C;
-    }
+/* FLOTA DORES SUAVES */
+.floating {
+  position: fixed;
+  bottom: -50px;
+  font-size: 20px;
+  opacity: 0.3;
+  animation: floatUp 25s linear infinite;
+}
 
-    #location {
-      font-size: 1.3em;
-    }
+@keyframes floatUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-110vh);
+  }
+}
 
-    #location ul {
-      margin-top: 10px;
-      text-align: left;
-      list-style: disc;
-      padding-left: 20px;
-    }
-
-    /* 🎁 MESA DE REGALOS CENTRADA */
-    #gifts {
-      font-size: 0.95em;
-      line-height: 1.6em;
-      text-align: center;
-      max-width: 600px;
-    }
-
-    #gifts h1 {
-      font-size: 2.6em;
-      margin-bottom: 20px;
-      color: #1F2A24;
-      position: relative;
-    }
-
-    /* Línea decorativa */
-    #gifts h1::after {
-      content: "";
-      display: block;
-      width: 100px;
-      height: 2px;
-      background: #C2A85C;
-      margin: 12px auto 0;
-    }
-
-    #rsvp {
-      font-size: 1.5em;
-    }
-
-    .countdown {
-      margin-top: 15px;
-      font-size: 1.2em;
-      font-weight: bold;
-      color: #3E5F4C;
-    }
-
-    a {
-      color: #C2A85C;
-      text-decoration: none;
-      border-bottom: 1px solid #C2A85C;
-    }
-
-    /* Flotadores */
-    .floaters {
-      position: fixed;
-      bottom: -50px;
-      font-size: 1.8em;
-      pointer-events: none;
-      animation: floatUp linear infinite;
-      z-index: 5;
-      opacity: 0.8;
-    }
-
-    @keyframes floatUp {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0.9; }
-      100% { transform: translateY(-120vh) rotate(180deg); opacity: 0; }
-    }
-
-  </style>
+</style>
 </head>
+
 <body>
 
-  <div class="ribbon-top"></div>
-  <div class="ribbon-bottom"></div>
+<div class="container">
 
-  <div class="container">
+  <h1>Baby Shower</h1>
+  <h2>Amelia</h2>
 
-    <section id="welcome">
-      <div class="first-line">Te invitamos al</div>
-      <div class="middle">Baby Shower</div>
-      <div class="first-line">de</div>
-      <h1>Amelia</h1>
-      <div class="last">
-        Mi mamá y mi papá 🤍<br>
-        <span class="parents">Ale & Antonio</span>
-      </div>
-    </section>
-
-    <section id="message">
-      Te invitamos con mucho amor a celebrar la llegada de Amelia.
-    </section>
-
-    <section id="location">
-      📍 Domingo 29 de marzo de 2026<br>
-      3:00 PM<br>
-      CDMX, Restaurante El Refugio del Inca<br><br>
-      <a href="https://maps.app.goo.gl/HwVX4MYUh9QWFVJF6" target="_blank">Ver ubicación</a>
-
-      <div style="margin-top:15px; text-align:left;">
-        Habrá:
-        <ul>
-          <li>Comida Peruana</li>
-          <li>Venta de Drinks</li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="gifts">
-      <h1>Mesa de regalos</h1>
-      <a href="https://www.amazon.com.mx/baby-reg/alejandraxochitl-cruz-mayo-2026-ciudaddemexico/1S3AGCO8YC7ZW?ref_=cm_sw_r_cp_ud_dp_EPGETXC9SPABYMQ1GT1Q_1" target="_blank">Ver mesa (abre link de amazon)</a><br><br>
-      La mesa de regalos es para sugerencias, pero si quieres darnos algo, puedes regalarnos lo que tú prefieras.<br>
-      Si encuentras una mejor opción, más económica o de segunda mano en otro lugar, es muy bienvenida, sólo avísanos que ya lo compraste para quitarlo de la lista.
-    </section>
-
-    <section id="rsvp">
-      Confirma tu asistencia 🤍
-      <div class="countdown" id="countdown"></div>
-    </section>
-
+  <div class="section">
+    Te invitamos con mucho amor a celebrar la llegada de nuestra pequeña Amelia
   </div>
 
-  <script>
-    const countdownEl = document.getElementById('countdown');
-    const eventDate = new Date("March 29, 2026 15:00:00").getTime();
+  <!-- SLIDESHOW -->
+  <div class="slideshow">
+    <img src="foto1.jpg" class="slide active">
+    <img src="foto2.jpg" class="slide">
+    <img src="foto3.jpg" class="slide">
+  </div>
 
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = eventDate - now;
+  <div class="section">
+    Fecha: 20 de Abril<br>
+    Hora: 4:00 PM<br>
+    Lugar: Casa de los abuelos
+  </div>
 
-      if(distance < 0){
-        countdownEl.innerHTML = "El evento ya comenzó";
-        clearInterval(timer);
-        return;
-      }
+  <h1 class="mesa-regalos">Mesa de regalos</h1>
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+</div>
 
-      countdownEl.innerHTML = `Faltan ${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }
+<!-- SCRIPT SLIDESHOW -->
+<script>
+const slides = document.querySelectorAll(".slide");
+let current = 0;
 
-    const timer = setInterval(updateCountdown, 1000);
-    updateCountdown();
+setInterval(() => {
 
-    const emojis = ['🍃','✨','🌿','🎈','🧸'];
-    const containerBody = document.body;
+  slides[current].classList.remove("active");
+  slides[current].style.transform = "translateX(100%)";
 
-    function createFloater() {
-      const span = document.createElement('span');
-      span.classList.add('floaters');
-      span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-      span.style.left = Math.random() * 90 + 'vw';
-      span.style.animationDuration = 30 + Math.random() * 20 + 's';
-      containerBody.appendChild(span);
-      setTimeout(() => { span.remove(); }, 40000);
-    }
+  current = (current + 1) % slides.length;
 
-    setInterval(createFloater, 4500);
-  </script>
+  slides[current].style.transform = "translateX(-100%)";
+
+  setTimeout(() => {
+    slides[current].classList.add("active");
+  }, 100);
+
+}, 4000);
+</script>
+
+<!-- FLOTA DORES SUAVES -->
+<script>
+const symbols = ["🌿","🍃","🤍"];
+function createFloating() {
+  const span = document.createElement("span");
+  span.classList.add("floating");
+  span.style.left = Math.random() * 100 + "vw";
+  span.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+  document.body.appendChild(span);
+
+  setTimeout(() => {
+    span.remove();
+  }, 25000);
+}
+
+setInterval(createFloating, 6000);
+</script>
 
 </body>
 </html>
