@@ -181,7 +181,32 @@
       0% { transform: translateY(0) rotate(0deg); opacity: 0.9; }
       100% { transform: translateY(-120vh) rotate(180deg); opacity: 0; }
     }
+    .slideshow {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 40px auto 0;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+      border: 6px solid #dbe8d3;
+    }
 
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: translateX(-100%);
+      transition: all 1.5s ease;
+      filter: contrast(105%) saturate(105%);
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
   </style>
 </head>
 <body>
@@ -203,6 +228,11 @@
     </section>
 
     <section id="message">
+    <div class="slideshow">
+      <img src="foto1.jpg" class="slide active">
+      <img src="foto2.jpg" class="slide">
+      <img src="foto3.jpg" class="slide">
+    </div>      
       Te invitamos con mucho amor a celebrar la llegada de Amelia.
     </section>
 
@@ -274,6 +304,23 @@
     }
 
     setInterval(createFloater, 4500);
+  </script>
+  <script>
+    const slides = document.querySelectorAll(".slide");
+    let current = 0;
+
+    setInterval(() => {
+      slides[current].classList.remove("active");
+      slides[current].style.transform = "translateX(100%)";
+
+      current = (current + 1) % slides.length;
+
+      slides[current].style.transform = "translateX(-100%)";
+      setTimeout(() => {
+        slides[current].classList.add("active");
+      }, 100);
+
+    }, 4000);
   </script>
 
 </body>
