@@ -194,7 +194,15 @@
       border: 6px solid #dbe8d3;
     }
     
-    .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.5s ease; }
+    .slide { 
+      position: absolute; 
+      width: 100%; 
+      height: 100%; 
+      object-fit: contain; 
+      object-position: center; 
+      background: #fff; 
+      opacity: 0; 
+      transition: opacity 1.5s ease; }
 
     .slide.active {
       opacity: 1;
