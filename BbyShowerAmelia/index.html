@@ -13,17 +13,30 @@
       height: 100%;
       overflow: hidden;
       font-family: 'Playfair Display', serif;
-      background: #F4F1EA; /* crema cálido */
-      color: #3E5F4C; /* verde musgo */
+      background: #F4F1EA;
+      color: #3E5F4C;
     }
 
-    /* Cintas estilo Amélie */
+    /* 🎬 VIÑETA CINEMATOGRÁFICA */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background: radial-gradient(circle at center, rgba(0,0,0,0) 55%, rgba(0,0,0,0.25) 100%);
+      z-index: 2;
+    }
+
+    /* Cintas */
     .ribbon-top, .ribbon-bottom {
       position: fixed;
       left: 0;
       width: 100%;
       height: 55px;
-      background: #1F2A24; /* verde oscuro profundo */
+      background: #1F2A24;
       z-index: 10;
     }
     .ribbon-top { top: 0; }
@@ -70,6 +83,17 @@
       margin: 12px 0;
       font-weight: 700;
       color: #1F2A24;
+      position: relative;
+    }
+
+    /* ✨ Línea artística debajo de Amelia */
+    #welcome h1::after {
+      content: "";
+      display: block;
+      width: 120px;
+      height: 2px;
+      background: #C2A85C;
+      margin: 12px auto 0;
     }
 
     #welcome div.last {
@@ -100,18 +124,29 @@
       padding-left: 20px;
     }
 
+    /* 🎁 MESA DE REGALOS CENTRADA */
     #gifts {
       font-size: 0.95em;
       line-height: 1.6em;
-      text-align: justify;
-      max-width: 80%;
+      text-align: center;
+      max-width: 600px;
     }
 
-    #gifts h2 {
+    #gifts h1 {
       font-size: 2.6em;
-      margin-bottom: 15px;
-      text-align: center;
+      margin-bottom: 20px;
       color: #1F2A24;
+      position: relative;
+    }
+
+    /* Línea decorativa */
+    #gifts h1::after {
+      content: "";
+      display: block;
+      width: 100px;
+      height: 2px;
+      background: #C2A85C;
+      margin: 12px auto 0;
     }
 
     #rsvp {
@@ -125,23 +160,13 @@
       color: #3E5F4C;
     }
 
-    .confirm-link {
-      display: inline-block;
-      margin-bottom: 15px;
-      font-weight: bold;
-      color: #C2A85C; /* dorado suave */
-      cursor: pointer;
-      text-decoration: none;
-      border-bottom: 1px solid #C2A85C;
-    }
-
     a {
       color: #C2A85C;
       text-decoration: none;
       border-bottom: 1px solid #C2A85C;
     }
 
-    /* Flotadores más artísticos */
+    /* Flotadores */
     .floaters {
       position: fixed;
       bottom: -50px;
@@ -199,7 +224,8 @@
     <section id="gifts">
       <h1>Mesa de regalos</h1>
       <a href="https://www.amazon.com.mx/baby-reg/alejandraxochitl-cruz-mayo-2026-ciudaddemexico/1S3AGCO8YC7ZW?ref_=cm_sw_r_cp_ud_dp_EPGETXC9SPABYMQ1GT1Q_1" target="_blank">Ver mesa (abre link de amazon)</a><br><br>
-      La mesa de regalos es para sugerencias, pero si quieres darnos algo, puedes regalarnos lo que tú prefieras.<br> Si encuentras una mejor opción, más económica o de segunda mano en otro lugar, es muy bienvenida, sólo avísanos que ya lo compraste para quitarlo de la lista.
+      La mesa de regalos es para sugerencias, pero si quieres darnos algo, puedes regalarnos lo que tú prefieras.<br>
+      Si encuentras una mejor opción, más económica o de segunda mano en otro lugar, es muy bienvenida, sólo avísanos que ya lo compraste para quitarlo de la lista.
     </section>
 
     <section id="rsvp">
@@ -210,10 +236,6 @@
   </div>
 
   <script>
-    function confirmPopup() {
-      alert("Gracias por confirmar tu asistencia 🤍");
-    }
-
     const countdownEl = document.getElementById('countdown');
     const eventDate = new Date("March 29, 2026 15:00:00").getTime();
 
@@ -238,7 +260,6 @@
     const timer = setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    /* Flotadores estilo Amélie */
     const emojis = ['🍃','✨','🌿','🎈','🧸'];
     const containerBody = document.body;
 
