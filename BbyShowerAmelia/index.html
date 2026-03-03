@@ -5,23 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Baby Shower Amelia</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; overflow: hidden; font-family: 'Playfair Display', serif; background: #fff; }
 
-    /* Cintas fijas arriba y abajo */
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Playfair Display', serif;
+      background: #F4F1EA; /* crema cálido */
+      color: #3E5F4C; /* verde musgo */
+    }
+
+    /* Cintas estilo Amélie */
     .ribbon-top, .ribbon-bottom {
       position: fixed;
       left: 0;
       width: 100%;
-      height: 50px;
-      background: #f67280;
+      height: 55px;
+      background: #1F2A24; /* verde oscuro profundo */
       z-index: 10;
     }
     .ribbon-top { top: 0; }
     .ribbon-bottom { bottom: 0; }
 
-    /* Contenedor scroll por pantalla */
     .container {
       height: 100%;
       width: 100%;
@@ -41,89 +48,145 @@
       align-items: center;
       text-align: center;
       padding: 20px;
-      position: relative;
-      color: #d87fae;
-      background: #fff;
+      background: #F4F1EA;
     }
 
-    /* Ajuste interlineado intermedio */
-    #welcome div.first-line { 
-      font-size: 1.2em; 
-      margin: 12px 0;           
-      line-height: 1.3em;       
+    /* Welcome */
+    #welcome div.first-line {
+      font-size: 1.2em;
+      margin: 12px 0;
+      line-height: 1.3em;
+      color: #6B8E6E;
     }
-    #welcome div.middle { 
-      font-size: 2em; 
-      margin: 12px 0; 
-      line-height: 1.3em; 
-    } 
-    #welcome h1 { 
-      font-size: 4em; 
-      margin: 12px 0; 
-      line-height: 1.2em; 
-      font-weight: 700; 
+
+    #welcome div.middle {
+      font-size: 2.2em;
+      margin: 12px 0;
+      color: #3E5F4C;
     }
-    #welcome div.last { font-size: 1em; margin-top: 8px; }
-    #welcome div.last .parents { font-size: 2em; font-weight: 700; }
 
-    #message { font-size: 1.5em; }
+    #welcome h1 {
+      font-size: 4.2em;
+      margin: 12px 0;
+      font-weight: 700;
+      color: #1F2A24;
+    }
 
-    #location { font-size: 1.4em; }
-    #location ul { margin-top: 10px; text-align: left; list-style: disc; padding-left: 20px; }
-    #location li { margin-bottom: 5px; }
+    #welcome div.last {
+      font-size: 1em;
+      margin-top: 8px;
+      color: #6B8E6E;
+    }
 
-    #gifts { font-size: 1em; line-height: 1.5em; text-align: justify; max-width: 90%; }
-    #gifts h2 { font-size: 2.5em; margin-bottom: 15px; text-align: center; }
+    #welcome .parents {
+      font-size: 2em;
+      font-weight: 700;
+      color: #3E5F4C;
+    }
 
-    #rsvp { font-size: 1.5em; }
-    .countdown { margin-top: 15px; font-size: 1.2em; font-weight: bold; }
-    .confirm-link { display: inline-block; margin-bottom: 15px; font-weight: bold; color: #d87fae; cursor: pointer; text-decoration: underline; }
+    #message {
+      font-size: 1.6em;
+      color: #3E5F4C;
+    }
 
-    a { color: #d87fae; text-decoration: underline; }
+    #location {
+      font-size: 1.3em;
+    }
 
-    /* Decoración: flotadores de bebé más lentos y sutiles */
+    #location ul {
+      margin-top: 10px;
+      text-align: left;
+      list-style: disc;
+      padding-left: 20px;
+    }
+
+    #gifts {
+      font-size: 0.95em;
+      line-height: 1.6em;
+      text-align: justify;
+      max-width: 80%;
+    }
+
+    #gifts h2 {
+      font-size: 2.6em;
+      margin-bottom: 15px;
+      text-align: center;
+      color: #1F2A24;
+    }
+
+    #rsvp {
+      font-size: 1.5em;
+    }
+
+    .countdown {
+      margin-top: 15px;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #3E5F4C;
+    }
+
+    .confirm-link {
+      display: inline-block;
+      margin-bottom: 15px;
+      font-weight: bold;
+      color: #C2A85C; /* dorado suave */
+      cursor: pointer;
+      text-decoration: none;
+      border-bottom: 1px solid #C2A85C;
+    }
+
+    a {
+      color: #C2A85C;
+      text-decoration: none;
+      border-bottom: 1px solid #C2A85C;
+    }
+
+    /* Flotadores más artísticos */
     .floaters {
       position: fixed;
       bottom: -50px;
-      font-size: 2em;
+      font-size: 1.8em;
       pointer-events: none;
       animation: floatUp linear infinite;
       z-index: 5;
+      opacity: 0.8;
     }
 
     @keyframes floatUp {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.9; }
+      100% { transform: translateY(-120vh) rotate(180deg); opacity: 0; }
     }
+
   </style>
 </head>
 <body>
 
-  <!-- Cintas fijas arriba y abajo -->
   <div class="ribbon-top"></div>
   <div class="ribbon-bottom"></div>
 
   <div class="container">
+
     <section id="welcome">
       <div class="first-line">Te invitamos al</div>
       <div class="middle">Baby Shower</div>
       <div class="first-line">de</div>
       <h1>Amelia</h1>
       <div class="last">
-        Mi mamá y mi papá ❤️<br>
+        Mi mamá y mi papá 🤍<br>
         <span class="parents">Ale & Antonio</span>
       </div>
     </section>
 
     <section id="message">
-      Te invitamos con mucho amor a celebrar la llegada de Amelia. 💖
+      Te invitamos con mucho amor a celebrar la llegada de Amelia.
     </section>
 
     <section id="location">
-      📍 Fecha: Domingo 29 de marzo de 2026<br>
-      Hora: 3:00 PM<br>
-      Lugar: CDMX, Restaurante El Refugio del Inca<br>
-      <a href="https://maps.app.goo.gl/HwVX4MYUh9QWFVJF6" target="_blank">Ver en Google Maps</a>
+      📍 Domingo 29 de marzo de 2026<br>
+      3:00 PM<br>
+      CDMX, Restaurante El Refugio del Inca<br><br>
+      <a href="https://maps.app.goo.gl/HwVX4MYUh9QWFVJF6" target="_blank">Ver ubicación</a>
+
       <div style="margin-top:15px; text-align:left;">
         Habrá:
         <ul>
@@ -135,25 +198,24 @@
 
     <section id="gifts">
       <h2>Mesa de regalos</h2>
-      <a href="https://www.amazon.com.mx/baby-reg/alejandraxochitl-cruz-mayo-2026-ciudaddemexico/1S3AGCO8YC7ZW?ref_=cm_sw_r_cp_ud_dp_EPGETXC9SPABYMQ1GT1Q_1" target="_blank">Ver mesa de regalos</a><br><br>
-      La mesa de regalos es para sugerencias, pero si quieres darnos algo, puedes regalarnos lo que tú prefieras.<br>
-      Si encuentras una mejor opción, más económica o de segunda mano en otro lugar, es muy bienvenido, sólo avísanos que ya lo compraste para quitarlo de la lista.
+      <a href="https://www.amazon.com.mx/baby-reg/alejandraxochitl-cruz-mayo-2026-ciudaddemexico/1S3AGCO8YC7ZW?ref_=cm_sw_r_cp_ud_dp_EPGETXC9SPABYMQ1GT1Q_1" target="_blank">Ver mesa</a><br><br>
+      La mesa de regalos es solo una sugerencia.  
+      Si encuentras algo más práctico o especial, será recibido con muchísimo cariño.
     </section>
 
     <section id="rsvp">
       <div class="confirm-link" onclick="confirmPopup()">Confirma aquí</div>
-      Confirma tu asistencia porfa 🙏<br>
+      Confirma tu asistencia 🤍
       <div class="countdown" id="countdown"></div>
     </section>
+
   </div>
 
   <script>
-    // Pop-up confirm
     function confirmPopup() {
-      alert("Gracias por confirmar tu asistencia 😊");
+      alert("Gracias por confirmar tu asistencia 🤍");
     }
 
-    // Contador hasta el evento
     const countdownEl = document.getElementById('countdown');
     const eventDate = new Date("March 29, 2026 15:00:00").getTime();
 
@@ -162,7 +224,7 @@
       const distance = eventDate - now;
 
       if(distance < 0){
-        countdownEl.innerHTML = "¡El evento ya comenzó!";
+        countdownEl.innerHTML = "El evento ya comenzó";
         clearInterval(timer);
         return;
       }
@@ -172,30 +234,14 @@
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      countdownEl.innerHTML = `Faltan ${days}d ${hours}h ${minutes}m ${seconds}s para el Baby Shower`;
+      countdownEl.innerHTML = `Faltan ${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
 
     const timer = setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Scroll con wheel / touch
-    const sections = document.querySelectorAll('section');
-    let current = 0;
-    let isScrolling = false;
-
-    document.querySelector('.container').addEventListener('wheel', (e) => {
-      if(isScrolling) return;
-      isScrolling = true;
-      if(e.deltaY > 0) current++;
-      else current--;
-      if(current < 0) current = 0;
-      if(current >= sections.length) current = sections.length - 1;
-      sections[current].scrollIntoView({ behavior: 'smooth' });
-      setTimeout(() => { isScrolling = false; }, 500);
-    });
-
-    // Decoración: ositos y elementos flotantes más suaves
-    const emojis = ['🧸','🍼','🌸','⭐','👶'];
+    /* Flotadores estilo Amélie */
+    const emojis = ['🍃','✨','🌿','🎈','🧸'];
     const containerBody = document.body;
 
     function createFloater() {
@@ -203,12 +249,12 @@
       span.classList.add('floaters');
       span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
       span.style.left = Math.random() * 90 + 'vw';
-      span.style.animationDuration = 25 + Math.random() * 25 + 's'; // sube mucho más lento
+      span.style.animationDuration = 30 + Math.random() * 20 + 's';
       containerBody.appendChild(span);
-      setTimeout(() => { span.remove(); }, 30000);
+      setTimeout(() => { span.remove(); }, 40000);
     }
 
-    setInterval(createFloater, 3000); // cada 2 segundos aparece un flotador
+    setInterval(createFloater, 4500);
   </script>
 
 </body>
