@@ -342,44 +342,49 @@
     const audio = document.getElementById("bg-music");
     const toggleBtn = document.getElementById("music-toggle");
 
-    let isPlaying = false;
-
-    // 🔥 Activar audio al primer scroll / swipe
-    function startMusicOnScroll() {
-      if (!isPlaying) {
-        audio.play();
-        toggleBtn.textContent = "🔊";
-        isPlaying = true;
+    // Arranca la música en la primera interacción válida
+    function startMusicOnce() {
+      if (audio.paused) {
+        audio.play().then(() => {
+          toggleBtn.textContent = "🔊";
+        }).catch(err => {
+          console.log("Audio bloqueado:", err);
+        });
       }
-      window.removeEventListener("scroll", startMusicOnScroll);
-      window.removeEventListener("touchmove", startMusicOnScroll);
+
+      // Ya no necesitamos estos listeners después de la primera vez
+      window.removeEventListener("click", startMusicOnce);
+      window.removeEventListener("touchstart", startMusicOnce);
     }
 
-    window.addEventListener("scroll", startMusicOnScroll, { passive: true });
-    window.addEventListener("touchmove", startMusicOnScroll, { passive: true });
+    window.addEventListener("click", startMusicOnce, { once: true });
+    window.addEventListener("touchstart", startMusicOnce, { once: true });
 
-    // 🔊 Botón manual
+    // Botón manual (este SÍ pausa)
     toggleBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (isPlaying) {
+      e.stopPropagation(); // para que el click del botón no cuente como click global
+
+      if (audio.paused) {
+        audio.play().then(() => {
+          toggleBtn.textContent = "🔊";
+        }).catch(err => {
+          console.log("Audio bloqueado:", err);
+        });
+      } else {
         audio.pause();
         toggleBtn.textContent = "🔈";
-      } else {
-        audio.play();
-        toggleBtn.textContent = "🔊";
       }
-      isPlaying = !isPlaying;
     });
 
-    // ⬇ Pausar cuando se oculta la app
+    // Opcional: si quieres que se pause al ocultar la pestaña
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
+      if (document.hidden && !audio.paused) {
         audio.pause();
         toggleBtn.textContent = "🔈";
-        isPlaying = false;
       }
     });
   </script>
+
 
 </body>
 </html>
