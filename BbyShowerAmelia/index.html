@@ -344,21 +344,23 @@
 
     let isPlaying = false;
 
-    // 🔥 Reproducir en el primer toque en cualquier parte
-    function startMusicOnce() {
+    // 🔥 Activar audio al primer scroll / swipe
+    function startMusicOnScroll() {
       if (!isPlaying) {
         audio.play();
         toggleBtn.textContent = "🔊";
         isPlaying = true;
       }
-      document.removeEventListener("click", startMusicOnce);
+      window.removeEventListener("scroll", startMusicOnScroll);
+      window.removeEventListener("touchmove", startMusicOnScroll);
     }
 
-    document.addEventListener("click", startMusicOnce);
+    window.addEventListener("scroll", startMusicOnScroll, { passive: true });
+    window.addEventListener("touchmove", startMusicOnScroll, { passive: true });
 
     // 🔊 Botón manual
     toggleBtn.addEventListener("click", (e) => {
-      e.stopPropagation(); // evita conflicto con el listener global
+      e.stopPropagation();
       if (isPlaying) {
         audio.pause();
         toggleBtn.textContent = "🔈";
@@ -368,8 +370,8 @@
       }
       isPlaying = !isPlaying;
     });
-  </script>
-  <script>
+
+    // ⬇ Pausar cuando se oculta la app
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) {
         audio.pause();
