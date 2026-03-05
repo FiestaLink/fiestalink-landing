@@ -356,6 +356,37 @@
       isPlaying = !isPlaying;
     });
   </script>
+  <script>
+  const audio = document.getElementById("bg-music");
+  const toggleBtn = document.getElementById("music-toggle");
+
+  let isPlaying = false;
+
+  // 🔥 Reproducir en el primer toque en cualquier parte
+  function startMusicOnce() {
+    if (!isPlaying) {
+      audio.play();
+      toggleBtn.textContent = "🔊";
+      isPlaying = true;
+    }
+    document.removeEventListener("click", startMusicOnce);
+  }
+
+  document.addEventListener("click", startMusicOnce);
+
+  // 🔊 Botón manual
+  toggleBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // evita conflicto con el listener global
+    if (isPlaying) {
+      audio.pause();
+      toggleBtn.textContent = "🔈";
+    } else {
+      audio.play();
+      toggleBtn.textContent = "🔊";
+    }
+    isPlaying = !isPlaying;
+  });
+</script>
 
 </body>
 </html>
