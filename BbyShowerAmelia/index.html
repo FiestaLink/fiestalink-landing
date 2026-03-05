@@ -19,7 +19,6 @@
       color: #3E5F4C;
     }
 
-    /* 🎬 VIÑETA CINEMATOGRÁFICA */
     body::after {
       content: "";
       position: fixed;
@@ -32,7 +31,6 @@
       z-index: 2;
     }
 
-    /* Cintas */
     .ribbon-top, .ribbon-bottom {
       position: fixed;
       left: 0;
@@ -66,7 +64,6 @@
       background: #F4F1EA;
     }
 
-    /* Welcome */
     #welcome div.first-line {
       font-size: 1.2em;
       margin: 12px 0;
@@ -88,7 +85,6 @@
       position: relative;
     }
 
-    /* ✨ Línea artística debajo de Amelia */
     #welcome h1::after {
       content: "";
       display: block;
@@ -126,7 +122,6 @@
       padding-left: 20px;
     }
 
-    /* 🎁 MESA DE REGALOS CENTRADA */
     #gifts {
       font-size: 0.95em;
       line-height: 1.6em;
@@ -141,7 +136,6 @@
       position: relative;
     }
 
-    /* Línea decorativa */
     #gifts h1::after {
       content: "";
       display: block;
@@ -168,7 +162,6 @@
       border-bottom: 1px solid #C2A85C;
     }
 
-    /* Flotadores */
     .floaters {
       position: fixed;
       bottom: -50px;
@@ -183,6 +176,7 @@
       0% { transform: translateY(0) rotate(0deg); opacity: 0.9; }
       100% { transform: translateY(-120vh) rotate(180deg); opacity: 0; }
     }
+
     .slideshow {
       position: relative;
       width: 280px;
@@ -194,7 +188,6 @@
       border: 6px solid #dbe8d3;
     }
 
-    
     .slide { 
       position: absolute;
       top: 0;
@@ -212,11 +205,13 @@
     .slide.active {
       opacity: 1;
     }
+
     .highlight-parents {
       font-family: 'Great Vibes', cursive;
       font-size: 1.7em;
       color: #3E5F4C;
     }
+
     .highlight-parents1 {
       font-family: 'Great Vibes', cursive;
       font-size: 2.2em;
@@ -232,7 +227,7 @@
 
   <div class="container">
 
-    <section id="welcome">
+    <section id="welcome" data-music="music.mp3">
       <div class="first-line">Te invitamos al</div>
       <div class="middle">Baby Shower</div>
       <div class="first-line">de</div>
@@ -243,17 +238,17 @@
       </div>
     </section>
 
-    <section id="message">
-    <div class="slideshow">
-      <img src="foto1.jpeg" class="slide active">
-      <img src="foto2.jpeg" class="slide">
-      <img src="foto3.png" class="slide">
-    </div>     
+    <section id="message" data-music="music.mp3">
+      <div class="slideshow">
+        <img src="foto1.jpeg" class="slide active">
+        <img src="foto2.jpeg" class="slide">
+        <img src="foto3.png" class="slide">
+      </div>     
       <br>
       En tiempo inciertos, el amor sigue cumpliendo su propósito. Hoy la vida insiste en florecer en ella: <span class="highlight-parents1">Amelia</span> y en sus padres: <span class="highlight-parents">Alejandra y Antonio</span>
     </section>
 
-    <section id="location">
+    <section id="location" data-music="music.mp3">
       📍 Domingo 29 de marzo de 2026<br>
       3:00 PM<br>
       CDMX, Restaurante El Refugio del Inca<br><br>
@@ -268,20 +263,29 @@
       </div>
     </section>
 
-    <section id="gifts">
+    <section id="gifts" data-music="music.mp3">
       <h1>Mesa de regalos</h1>
       <a href="https://www.amazon.com.mx/baby-reg/alejandraxochitl-cruz-mayo-2026-ciudaddemexico/1S3AGCO8YC7ZW?ref_=cm_sw_r_cp_ud_dp_EPGETXC9SPABYMQ1GT1Q_1" target="_blank">Ver mesa (abre link de amazon)</a><br><br>
       La mesa de regalos es para sugerencias, pero si quieres darnos algo, puedes regalarnos lo que tú prefieras.<br>
       Si encuentras una mejor opción, más económica o de segunda mano en otro lugar, es muy bienvenida, sólo avísanos que ya lo compraste para quitarlo de la lista. ¡Muchas gracias!
     </section>
 
-    <section id="rsvp">
+    <section id="rsvp" data-music="music.mp3">
       Confirma tu asistencia 🤍
       <div class="countdown" id="countdown"></div>
     </section>
 
   </div>
 
+  <!-- AUDIO -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- BOTÓN -->
+  <button id="music-toggle" aria-pressed="false" style="position:fixed; bottom:80px; right:20px; z-index:20;">🔈</button>
+
+  <!-- TU SCRIPT ORIGINAL (intacto) -->
   <script>
     const countdownEl = document.getElementById('countdown');
     const eventDate = new Date("March 29, 2026 15:00:00").getTime();
@@ -322,6 +326,7 @@
 
     setInterval(createFloater, 4500);
   </script>
+
   <script>
     const slides = document.querySelectorAll(".slide");
     let current = 0;
@@ -329,9 +334,27 @@
     setInterval(() => {
       slides[current].classList.remove("active");
       current = (current + 1) % slides.length;
-
       slides[current].classList.add("active");
     }, 4000);
+  </script>
+
+  <!-- SCRIPT DE AUDIO -->
+  <script>
+    const audio = document.getElementById("bg-music");
+    const toggleBtn = document.getElementById("music-toggle");
+
+    let isPlaying = false;
+
+    toggleBtn.addEventListener("click", () => {
+      if (isPlaying) {
+        audio.pause();
+        toggleBtn.textContent = "🔈";
+      } else {
+        audio.play();
+        toggleBtn.textContent = "🔊";
+      }
+      isPlaying = !isPlaying;
+    });
   </script>
 
 </body>
