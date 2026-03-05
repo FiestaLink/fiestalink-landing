@@ -369,6 +369,15 @@
       isPlaying = !isPlaying;
     });
   </script>
+  <script>
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        audio.pause();
+        toggleBtn.textContent = "🔈";
+        isPlaying = false;
+      }
+    });
+  </script>
 
 </body>
 </html>
