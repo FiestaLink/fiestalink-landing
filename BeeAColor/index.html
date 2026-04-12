@@ -61,6 +61,13 @@ body {
   animation: scroll 10s linear infinite;
 }
 
+/* 🔥 FIX CLAVE */
+.slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .slide img {
   width: 200px;
   height: 200px;
@@ -69,7 +76,7 @@ body {
   border-radius: 10px;
 }
 
-/* FADE GALERÍA */
+/* GALERÍA */
 .dual-gallery {
   display: flex;
   gap: 20px;
@@ -80,7 +87,6 @@ body {
 .fade-box {
   width: 45%;
   text-align: center;
-  position: relative;
 }
 
 .fade-box img {
@@ -135,7 +141,6 @@ button {
   border-radius: 10px;
 }
 
-/* 🔥 BOTÓN CIERRE MEJORADO */
 .close {
   position: absolute;
   top: 20px;
@@ -173,7 +178,6 @@ button {
 
 <div id="dynamic-sections"></div>
 
-<!-- REDES -->
 <section class="panel social">
   <h2>Síguenos</h2>
   <button onclick="window.open('https://instagram.com','_blank')">Instagram</button>
@@ -214,21 +218,26 @@ async function loadCSV() {
   buildSections(data);
 }
 
-/* BIENVENIDA */
+/* 🔥 FIX BIENVENIDA */
 function buildWelcome(data) {
   const track = document.getElementById('welcome-slider');
 
   const slides = data.map(item => {
+    const slide = document.createElement('div');
+    slide.className = 'slide';
+
     const img = document.createElement('img');
     img.src = `assets/img/${item.path}`;
-    return img;
+
+    slide.appendChild(img);
+    return slide;
   });
 
   slides.forEach(s => track.appendChild(s));
   slides.forEach(s => track.appendChild(s.cloneNode(true)));
 }
 
-/* SECCIONES */
+/* SECCIONES (sin cambios) */
 function buildSections(data) {
   const container = document.getElementById('dynamic-sections');
 
@@ -249,11 +258,8 @@ function buildSections(data) {
     const gallery = document.createElement('div');
     gallery.className = 'dual-gallery';
 
-    const left = createFadeBox(cats[cat]);
-    const right = createFadeBox(cats[cat]);
-
-    gallery.appendChild(left);
-    gallery.appendChild(right);
+    gallery.appendChild(createFadeBox(cats[cat]));
+    gallery.appendChild(createFadeBox(cats[cat]));
 
     const btn = document.createElement('button');
     btn.innerText = 'Cotiza';
@@ -266,7 +272,6 @@ function buildSections(data) {
   });
 }
 
-/* FADE BOX */
 function createFadeBox(items) {
   const box = document.createElement('div');
   box.className = 'fade-box';
@@ -281,14 +286,10 @@ function createFadeBox(items) {
 
     setTimeout(() => {
       const item = items[index];
-
       img.src = `assets/img/${item.path}`;
       desc.innerText = item.descripcion;
-
       img.onclick = () => openModal(img.src, item.descripcion);
-
       img.style.opacity = 1;
-
       index = (index + 1) % items.length;
     }, 400);
   }
@@ -302,7 +303,6 @@ function createFadeBox(items) {
   return box;
 }
 
-/* MODAL */
 function openModal(src, desc) {
   document.getElementById('modal').style.display = 'flex';
   document.getElementById('modal-img').src = src;
