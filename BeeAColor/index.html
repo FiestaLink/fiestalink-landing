@@ -17,7 +17,6 @@
       width: 100%;
       height: 40px;
       background: #f4c430;
-      color: black;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -41,18 +40,16 @@
       align-items: center;
       justify-content: center;
       padding: 60px 20px;
-      box-sizing: border-box;
       gap: 10px;
     }
 
     .welcome { background: #fff8dc; }
-    .social { background: #e8f5e9; }
     .category { background: #fdf6e3; }
+    .social { background: #e8f5e9; }
 
     .slider {
       width: 90%;
       overflow: hidden;
-      margin: 10px 0;
     }
 
     .slider-track {
@@ -79,7 +76,6 @@
     }
 
     .slide p {
-      margin-top: 5px;
       font-size: 14px;
       text-align: center;
       max-width: 200px;
@@ -94,9 +90,9 @@
       background: #f4c430;
       border: none;
       padding: 12px 20px;
-      cursor: pointer;
       border-radius: 10px;
-      margin-top: 10px; /* 🔥 ajustado */
+      margin-top: 10px;
+      cursor: pointer;
     }
 
     /* MODAL */
@@ -145,10 +141,9 @@
 
 <div id="container">
 
-  <!-- BIENVENIDA -->
   <section class="panel welcome">
     <h1>Bienvenido a Bee A Color 🐝</h1>
-    <p>Acuarelas originales, hechas a mano</p>
+    <p>Acuarelas originales</p>
 
     <div class="slider">
       <div class="slider-track fast" id="welcome-slider"></div>
@@ -157,7 +152,6 @@
 
   <div id="dynamic-sections"></div>
 
-  <!-- REDES -->
   <section class="panel social">
     <h2>Síguenos</h2>
     <button onclick="window.open('https://instagram.com','_blank')">Instagram</button>
@@ -177,57 +171,58 @@
 <script>
 
 async function loadCSV() {
-  const response = await fetch('input.csv');
-  const data = await response.text();
+  const res = await fetch('input.csv');
+  const text = await res.text();
 
-  const rows = data.split('\n').slice(1);
-
-  const parsed = rows
+  const data = text.split('\n').slice(1)
     .map(r => r.trim())
-    .filter(r => r !== "")
-    .map(row => {
-      const cols = row.split(',');
-      if (cols.length < 4) return null;
+    .filter(r => r)
+    .map(r => {
+      const c = r.split(',');
+      if (c.length < 4) return null;
       return {
-        categoria: cols[0]?.trim(),
-        titulo: cols[1]?.trim(),
-        descripcion: cols[2]?.trim(),
-        path: cols[3]?.trim()
+        categoria: c[0],
+        descripcion: c[2],
+        path: c[3]
       };
     })
     .filter(x => x);
 
-  buildWelcomeSlider(parsed);
-  buildSections(parsed);
+  buildWelcome(data);
+  buildSections(data);
 }
 
-function buildWelcomeSlider(data) {
-  const container = document.getElementById('welcome-slider');
+/* BIENVENIDA */
+function buildWelcome(data) {
+  const track = document.getElementById('welcome-slider');
 
-  data.forEach(item => {
-    const slide = document.createElement('div');
-    slide.className = 'slide';
+  const slides = data.map(item => {
+    const s = document.createElement('div');
+    s.className = 'slide';
 
     const img = document.createElement('img');
     img.src = `assets/img/${item.path}`;
 
-    slide.appendChild(img);
-    container.appendChild(slide);
+    s.appendChild(img);
+    return s;
   });
 
-  container.innerHTML += container.innerHTML;
+  slides.forEach(s => track.appendChild(s));
+
+  slides.forEach(s => track.appendChild(s.cloneNode(true))); // 🔥 correcto
 }
 
+/* SECCIONES */
 function buildSections(data) {
   const container = document.getElementById('dynamic-sections');
-  const categorias = {};
 
-  data.forEach(item => {
-    if (!categorias[item.categoria]) categorias[item.categoria] = [];
-    categorias[item.categoria].push(item);
+  const cats = {};
+  data.forEach(d => {
+    if (!cats[d.categoria]) cats[d.categoria] = [];
+    cats[d.categoria].push(d);
   });
 
-  Object.keys(categorias).forEach(cat => {
+  Object.keys(cats).forEach(cat => {
 
     const section = document.createElement('section');
     section.className = 'panel category';
@@ -235,16 +230,16 @@ function buildSections(data) {
     const title = document.createElement('h2');
     title.innerText = cat;
 
-    const slider = document.createElement('div');
-    slider.className = 'slider';
-
     const track = document.createElement('div');
     track.className = 'slider-track slow';
 
-    categorias[cat].forEach(item => {
+    const slider = document.createElement('div');
+    slider.className = 'slider';
 
-      const slide = document.createElement('div');
-      slide.className = 'slide';
+    const slides = cats[cat].map(item => {
+
+      const s = document.createElement('div');
+      s.className = 'slide';
 
       const img = document.createElement('img');
       img.src = `assets/img/${item.path}`;
@@ -252,21 +247,42 @@ function buildSections(data) {
       const desc = document.createElement('p');
       desc.innerText = item.descripcion;
 
-      slide.onclick = () => openModal(img.src, item.descripcion);
+      const open = () => openModal(img.src, item.descripcion);
 
-      slide.appendChild(img);
-      slide.appendChild(desc);
+      s.addEventListener('click', open);
+      s.addEventListener('touchstart', open);
 
-      track.appendChild(slide);
+      s.appendChild(img);
+      s.appendChild(desc);
+
+      return s;
     });
 
-    track.innerHTML += track.innerHTML;
+    slides.forEach(s => track.appendChild(s));
+
+    // 🔥 duplicar SIN romper eventos
+    slides.forEach(s => {
+      const clone = s.cloneNode(true);
+
+      clone.addEventListener('click', () => {
+        const img = clone.querySelector('img').src;
+        const desc = clone.querySelector('p').innerText;
+        openModal(img, desc);
+      });
+
+      clone.addEventListener('touchstart', () => {
+        const img = clone.querySelector('img').src;
+        const desc = clone.querySelector('p').innerText;
+        openModal(img, desc);
+      });
+
+      track.appendChild(clone);
+    });
 
     slider.appendChild(track);
 
     const btn = document.createElement('button');
     btn.innerText = 'Cotiza';
-    btn.onclick = () => alert('Contacto para cotización');
 
     section.appendChild(title);
     section.appendChild(slider);
@@ -278,7 +294,8 @@ function buildSections(data) {
 
 /* MODAL */
 function openModal(src, desc) {
-  document.getElementById('modal').style.display = 'flex';
+  const m = document.getElementById('modal');
+  m.style.display = 'flex';
   document.getElementById('modal-img').src = src;
   document.getElementById('modal-desc').innerText = desc;
 }
@@ -287,11 +304,9 @@ function closeModal() {
   document.getElementById('modal').style.display = 'none';
 }
 
-/* cerrar haciendo click fuera */
-window.onclick = function(e) {
-  const modal = document.getElementById('modal');
-  if (e.target === modal) closeModal();
-}
+window.onclick = e => {
+  if (e.target.id === 'modal') closeModal();
+};
 
 loadCSV();
 
