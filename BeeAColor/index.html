@@ -1,167 +1,189 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bee A Color 🐝</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bee A Color 🐝</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      overflow: hidden;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: sans-serif;
+  overflow: hidden;
+}
 
-    .top-bar, .bottom-bar {
-      position: fixed;
-      width: 100%;
-      height: 40px;
-      background: #f4c430;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-    }
+/* BARRAS */
+.top-bar, .bottom-bar {
+  position: fixed;
+  width: 100%;
+  height: 40px;
+  background: #f4c430;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
 
-    .top-bar { top: 0; }
-    .bottom-bar { bottom: 0; }
+.top-bar { top: 0; }
+.bottom-bar { bottom: 0; }
 
-    #container {
-      scroll-snap-type: y mandatory;
-      overflow-y: scroll;
-      height: 100vh;
-    }
+/* CONTENEDOR */
+#container {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+}
 
-    .panel {
-      min-height: calc(100vh - 80px);
-      scroll-snap-align: start;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 20px;
-      gap: 10px;
-    }
+/* PANEL */
+.panel {
+  min-height: calc(100vh - 80px);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 20px;
+}
 
-    .welcome { background: #fff8dc; }
-    .category { background: #fdf6e3; }
-    .social { background: #e8f5e9; }
+.welcome { background: #fff8dc; }
+.category { background: #fdf6e3; }
+.social { background: #e8f5e9; }
 
-    .slider {
-      width: 90%;
-      overflow: hidden;
-    }
+/* SLIDER BIENVENIDA */
+.slider {
+  width: 90%;
+  overflow: hidden;
+}
 
-    .slider-track {
-      display: flex;
-      animation: scroll linear infinite;
-    }
+.slider-track {
+  display: flex;
+  animation: scroll 10s linear infinite;
+}
 
-    .fast { animation-duration: 10s; }
-    .slow { animation-duration: 35s; }
+.slide img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin: 0 10px;
+  border-radius: 10px;
+}
 
-    .slide {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 0 10px;
-      cursor: pointer;
-    }
+/* FADE GALERÍA */
+.dual-gallery {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  justify-content: center;
+}
 
-    .slide img {
-      width: 200px;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
+.fade-box {
+  width: 45%;
+  text-align: center;
+  position: relative;
+}
 
-    .slide p {
-      font-size: 14px;
-      text-align: center;
-      max-width: 200px;
-    }
+.fade-box img {
+  width: 100%;
+  max-width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.8s;
+}
 
-    @keyframes scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
+.fade-box p {
+  font-size: 14px;
+}
 
-    button {
-      background: #f4c430;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
-      margin-top: 10px;
-      cursor: pointer;
-    }
+/* BOTÓN */
+button {
+  background: #f4c430;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+}
 
-    /* MODAL */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.8);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 20;
-    }
+/* MODAL */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
 
-    .modal-content {
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      text-align: center;
-      max-width: 90%;
-    }
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  max-width: 90%;
+}
 
-    .modal img {
-      max-width: 100%;
-      border-radius: 10px;
-    }
+.modal img {
+  max-width: 100%;
+  border-radius: 10px;
+}
 
-    .close {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      font-size: 30px;
-      color: white;
-      cursor: pointer;
-    }
+/* 🔥 BOTÓN CIERRE MEJORADO */
+.close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  color: white;
+  background: black;
+  padding: 8px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+}
 
-  </style>
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+</style>
 </head>
 
 <body>
 
 <div class="top-bar">🐝 Bee A Color</div>
-<div class="bottom-bar">Acuarelas únicas hechas con amor 🎨</div>
+<div class="bottom-bar">Acuarelas únicas 🎨</div>
 
 <div id="container">
 
-  <section class="panel welcome">
-    <h1>Bienvenido a Bee A Color 🐝</h1>
-    <p>Acuarelas originales</p>
+<!-- BIENVENIDA -->
+<section class="panel welcome">
+  <h1>Bee A Color 🐝</h1>
 
-    <div class="slider">
-      <div class="slider-track fast" id="welcome-slider"></div>
-    </div>
-  </section>
+  <div class="slider">
+    <div class="slider-track" id="welcome-slider"></div>
+  </div>
+</section>
 
-  <div id="dynamic-sections"></div>
+<div id="dynamic-sections"></div>
 
-  <section class="panel social">
-    <h2>Síguenos</h2>
-    <button onclick="window.open('https://instagram.com','_blank')">Instagram</button>
-  </section>
+<!-- REDES -->
+<section class="panel social">
+  <h2>Síguenos</h2>
+  <button onclick="window.open('https://instagram.com','_blank')">Instagram</button>
+</section>
 
 </div>
 
 <!-- MODAL -->
 <div id="modal" class="modal">
-  <span class="close" onclick="closeModal()">&times;</span>
+  <span class="close" onclick="closeModal()">✕</span>
   <div class="modal-content">
     <img id="modal-img">
     <p id="modal-desc"></p>
@@ -197,19 +219,13 @@ function buildWelcome(data) {
   const track = document.getElementById('welcome-slider');
 
   const slides = data.map(item => {
-    const s = document.createElement('div');
-    s.className = 'slide';
-
     const img = document.createElement('img');
     img.src = `assets/img/${item.path}`;
-
-    s.appendChild(img);
-    return s;
+    return img;
   });
 
   slides.forEach(s => track.appendChild(s));
-
-  slides.forEach(s => track.appendChild(s.cloneNode(true))); // 🔥 correcto
+  slides.forEach(s => track.appendChild(s.cloneNode(true)));
 }
 
 /* SECCIONES */
@@ -230,72 +246,65 @@ function buildSections(data) {
     const title = document.createElement('h2');
     title.innerText = cat;
 
-    const track = document.createElement('div');
-    track.className = 'slider-track slow';
+    const gallery = document.createElement('div');
+    gallery.className = 'dual-gallery';
 
-    const slider = document.createElement('div');
-    slider.className = 'slider';
+    const left = createFadeBox(cats[cat]);
+    const right = createFadeBox(cats[cat]);
 
-    const slides = cats[cat].map(item => {
-
-      const s = document.createElement('div');
-      s.className = 'slide';
-
-      const img = document.createElement('img');
-      img.src = `assets/img/${item.path}`;
-
-      const desc = document.createElement('p');
-      desc.innerText = item.descripcion;
-
-      const open = () => openModal(img.src, item.descripcion);
-
-      s.addEventListener('click', open);
-      s.addEventListener('touchstart', open);
-
-      s.appendChild(img);
-      s.appendChild(desc);
-
-      return s;
-    });
-
-    slides.forEach(s => track.appendChild(s));
-
-    // 🔥 duplicar SIN romper eventos
-    slides.forEach(s => {
-      const clone = s.cloneNode(true);
-
-      clone.addEventListener('click', () => {
-        const img = clone.querySelector('img').src;
-        const desc = clone.querySelector('p').innerText;
-        openModal(img, desc);
-      });
-
-      clone.addEventListener('touchstart', () => {
-        const img = clone.querySelector('img').src;
-        const desc = clone.querySelector('p').innerText;
-        openModal(img, desc);
-      });
-
-      track.appendChild(clone);
-    });
-
-    slider.appendChild(track);
+    gallery.appendChild(left);
+    gallery.appendChild(right);
 
     const btn = document.createElement('button');
     btn.innerText = 'Cotiza';
 
     section.appendChild(title);
-    section.appendChild(slider);
+    section.appendChild(gallery);
     section.appendChild(btn);
 
     container.appendChild(section);
   });
 }
 
+/* FADE BOX */
+function createFadeBox(items) {
+  const box = document.createElement('div');
+  box.className = 'fade-box';
+
+  const img = document.createElement('img');
+  const desc = document.createElement('p');
+
+  let index = Math.floor(Math.random() * items.length);
+
+  function update() {
+    img.style.opacity = 0;
+
+    setTimeout(() => {
+      const item = items[index];
+
+      img.src = `assets/img/${item.path}`;
+      desc.innerText = item.descripcion;
+
+      img.onclick = () => openModal(img.src, item.descripcion);
+
+      img.style.opacity = 1;
+
+      index = (index + 1) % items.length;
+    }, 400);
+  }
+
+  update();
+  setInterval(update, 3000);
+
+  box.appendChild(img);
+  box.appendChild(desc);
+
+  return box;
+}
+
 /* MODAL */
 function openModal(src, desc) {
-  const m = document.getElementById('modal');
-  m.style.display = 'flex';
+  document.getElementById('modal').style.display = 'flex';
   document.getElementById('modal-img').src = src;
   document.getElementById('modal-desc').innerText = desc;
 }
