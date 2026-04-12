@@ -71,6 +71,14 @@ body {
   border-radius: 10px;
 }
 
+/* MENSAJE RESTAURADO */
+.welcome-text {
+  max-width: 520px;
+  font-size: 16px;
+  line-height: 1.4;
+  margin-top: 10px;
+}
+
 /* GALERÍA */
 .dual-gallery {
   display: flex;
@@ -166,11 +174,17 @@ button {
 
 <div id="container">
 
+<!-- BIENVENIDA -->
 <section class="panel welcome">
   <h1>Bee a Color 🐝 Acuarelas</h1>
 
   <div class="slider">
     <div class="slider-track" id="welcome-slider"></div>
+  </div>
+
+  <!-- 🔥 RESTAURADO -->
+  <div class="welcome-text">
+    ¡Te dibujamos en acuarela lo que te imagines! Flores, retratos, mascotas, diseños especiales. Desliza y encuentra nuestro catálogo
   </div>
 </section>
 
@@ -183,6 +197,7 @@ button {
 
 </div>
 
+<!-- MODAL -->
 <div id="modal" class="modal">
   <span class="close" onclick="closeModal()">✕</span>
   <div class="modal-content">
@@ -216,7 +231,6 @@ async function loadCSV() {
   buildSections(data);
 }
 
-/* BIENVENIDA */
 function buildWelcome(data) {
   const track = document.getElementById('welcome-slider');
 
@@ -238,7 +252,6 @@ function buildWelcome(data) {
   slides.forEach(s => track.appendChild(s.cloneNode(true)));
 }
 
-/* SECCIONES */
 function buildSections(data) {
   const container = document.getElementById('dynamic-sections');
 
@@ -272,10 +285,8 @@ function buildSections(data) {
       boxes.forEach(b => b.fade());
 
       setTimeout(() => {
-
         boxes.forEach((b, i) => {
           const item = cats[cat][(index + i) % cats[cat].length];
-
           b.set(item);
           b.show();
         });
@@ -299,7 +310,6 @@ function buildSections(data) {
   });
 }
 
-/* BOX */
 function createFadeBox() {
   const box = document.createElement('div');
   box.className = 'fade-box';
@@ -324,13 +334,11 @@ function createFadeBox() {
       img.loading = "lazy";
       title.innerText = item.titulo;
       desc.innerText = item.descripcion;
-
       img.onclick = () => openModal(img.src, item.descripcion);
     }
   };
 }
 
-/* MODAL */
 function openModal(src, desc) {
   document.getElementById('modal').style.display = 'flex';
   document.getElementById('modal-img').src = src;
