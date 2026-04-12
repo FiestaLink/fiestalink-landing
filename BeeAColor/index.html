@@ -44,11 +44,19 @@ body {
   justify-content: center;
   padding: 60px 20px;
   gap: 20px;
+  text-align: center;
 }
 
 .welcome { background: #fff8dc; }
 .category { background: #fdf6e3; }
 .social { background: #e8f5e9; }
+
+/* MENSAJE BIENVENIDA */
+.welcome-text {
+  max-width: 500px;
+  font-size: 16px;
+  line-height: 1.4;
+}
 
 /* SLIDER */
 .slider {
@@ -176,11 +184,16 @@ button {
   <div class="slider">
     <div class="slider-track" id="welcome-slider"></div>
   </div>
+
+  <!-- 🔥 NUEVO TEXTO -->
+  <div class="welcome-text">
+    ¡Te dibujamos en acuarela lo que te imagines! Flores, retratos, mascotas, diseños especiales. Desliza y encuentra nuestro catálogo
+  </div>
+
 </section>
 
 <div id="dynamic-sections"></div>
 
-<!-- REDES -->
 <section class="panel social">
   <h2>Síguenos</h2>
   <button onclick="window.open('https://instagram.com','_blank')">Instagram</button>
@@ -221,11 +234,10 @@ async function loadCSV() {
   buildSections(data);
 }
 
-/* BIENVENIDA (optimizada) */
 function buildWelcome(data) {
   const track = document.getElementById('welcome-slider');
 
-  const limited = data.slice(0, 10); // 🔥 performance
+  const limited = data.slice(0, 10);
 
   const slides = limited.map(item => {
     const slide = document.createElement('div');
@@ -242,7 +254,6 @@ function buildWelcome(data) {
   slides.forEach(s => track.appendChild(s));
   slides.forEach(s => track.appendChild(s.cloneNode(true)));
 
-  /* 🔥 pausa en interacción */
   track.addEventListener('mouseenter', () => track.classList.add('pause'));
   track.addEventListener('mouseleave', () => track.classList.remove('pause'));
 
@@ -250,7 +261,6 @@ function buildWelcome(data) {
   track.addEventListener('touchend', () => track.classList.remove('pause'));
 }
 
-/* SECCIONES */
 function buildSections(data) {
   const container = document.getElementById('dynamic-sections');
 
@@ -311,7 +321,6 @@ function buildSections(data) {
   });
 }
 
-/* FADE BOX */
 function createFadeBox() {
   const box = document.createElement('div');
   box.className = 'fade-box';
@@ -335,7 +344,6 @@ function createFadeBox() {
   };
 }
 
-/* MODAL */
 function openModal(src, desc) {
   document.getElementById('modal').style.display = 'flex';
   document.getElementById('modal-img').src = src;
