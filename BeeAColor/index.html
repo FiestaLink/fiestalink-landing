@@ -6,113 +6,158 @@
 <title>Bee A Color 🐝</title>
 
 <style>
-body { margin:0; font-family:sans-serif; overflow:hidden; }
+body {
+  margin: 0;
+  font-family: sans-serif;
+  overflow: hidden;
+}
 
+/* BARRAS */
 .top-bar, .bottom-bar {
-  position:fixed; width:100%; height:40px;
-  background:#f4c430; display:flex; align-items:center;
-  justify-content:center; z-index:10;
+  position: fixed;
+  width: 100%;
+  height: 40px;
+  background: #f4c430;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 }
-.top-bar{top:0;} .bottom-bar{bottom:0;}
 
+.top-bar { top: 0; }
+.bottom-bar { bottom: 0; }
+
+/* CONTENEDOR */
 #container {
-  scroll-snap-type:y mandatory;
-  overflow-y:scroll;
-  height:100vh;
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
 }
 
+/* PANEL */
 .panel {
-  min-height:calc(100vh - 80px);
-  scroll-snap-align:start;
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  padding:60px 20px; gap:20px;
+  min-height: calc(100vh - 80px);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 20px;
 }
 
-.welcome{background:#fff8dc;}
-.category{background:#fdf6e3;}
-.social{background:#e8f5e9;}
+.welcome { background: #fff8dc; }
+.category { background: #fdf6e3; }
+.social { background: #e8f5e9; }
 
-/* 🔥 MÁS RÁPIDO */
+/* SLIDER */
+.slider {
+  width: 90%;
+  overflow: hidden;
+}
+
 .slider-track {
-  display:flex;
-  animation:scroll 6s linear infinite;
+  display: flex;
+  animation: scroll 8s linear infinite;
+}
+
+.slider-track.pause {
+  animation-play-state: paused;
+}
+
+.slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .slide img {
-  width:200px; height:200px;
-  object-fit:cover;
-  margin:0 10px;
-  border-radius:10px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin: 0 10px;
+  border-radius: 10px;
 }
 
 /* GALERÍA */
 .dual-gallery {
-  display:flex;
-  gap:20px;
-  width:100%;
-  justify-content:center;
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  justify-content: center;
 }
 
 .fade-box {
-  width:45%;
-  text-align:center;
+  width: 45%;
+  text-align: center;
 }
 
 .fade-box img {
-  width:100%;
-  max-width:220px;
-  height:220px;
-  object-fit:cover;
-  border-radius:10px;
-  cursor:pointer;
-  opacity:1;
-  transition:opacity 0.8s;
+  width: 100%;
+  max-width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.8s;
 }
 
+.fade-box p {
+  font-size: 14px;
+}
+
+/* BOTÓN */
 button {
-  background:#f4c430;
-  border:none;
-  padding:12px 20px;
-  border-radius:10px;
-  margin-top:10px;
-  cursor:pointer;
+  background: #f4c430;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
 /* MODAL */
 .modal {
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.85);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:20;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
 }
 
 .modal-content {
-  background:white;
-  padding:20px;
-  border-radius:15px;
-  text-align:center;
-  max-width:90%;
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  max-width: 90%;
+}
+
+.modal img {
+  max-width: 100%;
+  border-radius: 10px;
 }
 
 .close {
-  position:absolute;
-  top:20px;
-  right:20px;
-  color:white;
-  background:black;
-  padding:8px 12px;
-  border-radius:50%;
-  cursor:pointer;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  background: black;
+  padding: 8px 12px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 @keyframes scroll {
-  0%{transform:translateX(0);}
-  100%{transform:translateX(-50%);}
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 </style>
 </head>
@@ -124,8 +169,10 @@ button {
 
 <div id="container">
 
+<!-- BIENVENIDA -->
 <section class="panel welcome">
   <h1>Bee A Color 🐝</h1>
+
   <div class="slider">
     <div class="slider-track" id="welcome-slider"></div>
   </div>
@@ -133,6 +180,7 @@ button {
 
 <div id="dynamic-sections"></div>
 
+<!-- REDES -->
 <section class="panel social">
   <h2>Síguenos</h2>
   <button onclick="window.open('https://instagram.com','_blank')">Instagram</button>
@@ -140,6 +188,7 @@ button {
 
 </div>
 
+<!-- MODAL -->
 <div id="modal" class="modal">
   <span class="close" onclick="closeModal()">✕</span>
   <div class="modal-content">
@@ -155,90 +204,104 @@ async function loadCSV() {
   const text = await res.text();
 
   const data = text.split('\n').slice(1)
-    .map(r=>r.trim()).filter(r=>r)
-    .map(r=>{
-      const c=r.split(',');
-      if(c.length<4) return null;
-      return {categoria:c[0],descripcion:c[2],path:c[3]};
-    }).filter(x=>x);
+    .map(r => r.trim())
+    .filter(r => r)
+    .map(r => {
+      const c = r.split(',');
+      if (c.length < 4) return null;
+      return {
+        categoria: c[0],
+        descripcion: c[2],
+        path: c[3]
+      };
+    })
+    .filter(x => x);
 
   buildWelcome(data);
   buildSections(data);
 }
 
-/* BIENVENIDA */
-function buildWelcome(data){
-  const track=document.getElementById('welcome-slider');
+/* BIENVENIDA (optimizada) */
+function buildWelcome(data) {
+  const track = document.getElementById('welcome-slider');
 
-  const slides=data.map(item=>{
-    const div=document.createElement('div');
-    div.className='slide';
+  const limited = data.slice(0, 10); // 🔥 performance
 
-    const img=document.createElement('img');
-    img.src=`assets/img/${item.path}`;
+  const slides = limited.map(item => {
+    const slide = document.createElement('div');
+    slide.className = 'slide';
 
-    div.appendChild(img);
-    return div;
+    const img = document.createElement('img');
+    img.src = `assets/img/${item.path}`;
+    img.loading = "lazy";
+
+    slide.appendChild(img);
+    return slide;
   });
 
-  slides.forEach(s=>track.appendChild(s));
-  slides.forEach(s=>track.appendChild(s.cloneNode(true)));
+  slides.forEach(s => track.appendChild(s));
+  slides.forEach(s => track.appendChild(s.cloneNode(true)));
+
+  /* 🔥 pausa en interacción */
+  track.addEventListener('mouseenter', () => track.classList.add('pause'));
+  track.addEventListener('mouseleave', () => track.classList.remove('pause'));
+
+  track.addEventListener('touchstart', () => track.classList.add('pause'));
+  track.addEventListener('touchend', () => track.classList.remove('pause'));
 }
 
 /* SECCIONES */
-function buildSections(data){
-  const container=document.getElementById('dynamic-sections');
+function buildSections(data) {
+  const container = document.getElementById('dynamic-sections');
 
-  const cats={};
-  data.forEach(d=>{
-    if(!cats[d.categoria]) cats[d.categoria]=[];
+  const cats = {};
+  data.forEach(d => {
+    if (!cats[d.categoria]) cats[d.categoria] = [];
     cats[d.categoria].push(d);
   });
 
-  Object.keys(cats).forEach(cat=>{
+  Object.keys(cats).forEach(cat => {
 
-    const section=document.createElement('section');
-    section.className='panel category';
+    const section = document.createElement('section');
+    section.className = 'panel category';
 
-    const title=document.createElement('h2');
-    title.innerText=cat;
+    const title = document.createElement('h2');
+    title.innerText = cat;
 
-    const gallery=document.createElement('div');
-    gallery.className='dual-gallery';
+    const gallery = document.createElement('div');
+    gallery.className = 'dual-gallery';
 
-    const left=createFadeBox();
-    const right=createFadeBox();
+    const left = createFadeBox();
+    const right = createFadeBox();
 
     gallery.appendChild(left.box);
     gallery.appendChild(right.box);
 
-    /* 🔥 CONTROL CENTRALIZADO */
-    let index=0;
+    let index = 0;
 
-    function update(){
+    function update() {
       left.fade();
       right.fade();
 
-      setTimeout(()=>{
-        const a=cats[cat][index];
-        const b=cats[cat][(index+1)%cats[cat].length];
+      setTimeout(() => {
+        const a = cats[cat][index];
+        const b = cats[cat][(index + 1) % cats[cat].length];
 
         left.set(a);
         right.set(b);
 
-        index=(index+1)%cats[cat].length;
+        index = (index + 1) % cats[cat].length;
 
         left.show();
         right.show();
-
-      },400);
+      }, 400);
     }
 
     update();
-    setInterval(update,3000);
+    setInterval(update, 3000);
 
-    const btn=document.createElement('button');
-    btn.innerText='Cotiza';
+    const btn = document.createElement('button');
+    btn.innerText = 'Cotiza';
 
     section.appendChild(title);
     section.appendChild(gallery);
@@ -248,42 +311,43 @@ function buildSections(data){
   });
 }
 
-/* FADE BOX FACTORY */
-function createFadeBox(){
-  const box=document.createElement('div');
-  box.className='fade-box';
+/* FADE BOX */
+function createFadeBox() {
+  const box = document.createElement('div');
+  box.className = 'fade-box';
 
-  const img=document.createElement('img');
-  const desc=document.createElement('p');
+  const img = document.createElement('img');
+  const desc = document.createElement('p');
 
   box.appendChild(img);
   box.appendChild(desc);
 
   return {
     box,
-    fade:()=> img.style.opacity=0,
-    show:()=> img.style.opacity=1,
-    set:(item)=>{
-      img.src=`assets/img/${item.path}`;
-      desc.innerText=item.descripcion;
-      img.onclick=()=>openModal(img.src,item.descripcion);
+    fade: () => img.style.opacity = 0,
+    show: () => img.style.opacity = 1,
+    set: (item) => {
+      img.src = `assets/img/${item.path}`;
+      img.loading = "lazy";
+      desc.innerText = item.descripcion;
+      img.onclick = () => openModal(img.src, item.descripcion);
     }
   };
 }
 
 /* MODAL */
-function openModal(src,desc){
-  document.getElementById('modal').style.display='flex';
-  document.getElementById('modal-img').src=src;
-  document.getElementById('modal-desc').innerText=desc;
+function openModal(src, desc) {
+  document.getElementById('modal').style.display = 'flex';
+  document.getElementById('modal-img').src = src;
+  document.getElementById('modal-desc').innerText = desc;
 }
 
-function closeModal(){
-  document.getElementById('modal').style.display='none';
+function closeModal() {
+  document.getElementById('modal').style.display = 'none';
 }
 
-window.onclick=e=>{
-  if(e.target.id==='modal') closeModal();
+window.onclick = e => {
+  if (e.target.id === 'modal') closeModal();
 };
 
 loadCSV();
