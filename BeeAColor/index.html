@@ -37,14 +37,15 @@
 
     /* PANELES */
     .panel {
-      height: 100vh;
+      min-height: calc(100vh - 80px); /* 🔥 mejor para móvil */
       scroll-snap-align: start;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      padding-top: 40px;
-      padding-bottom: 40px;
+      justify-content: center;
+      padding: 60px 20px;
+      box-sizing: border-box;
+      gap: 10px;
     }
 
     .welcome { background: #fff8dc; }
@@ -53,9 +54,9 @@
 
     /* SLIDER */
     .slider {
-      width: 80%;
+      width: 90%;
       overflow: hidden;
-      margin: 20px 0;
+      margin: 10px 0;
     }
 
     .slider-track {
@@ -63,13 +64,8 @@
       animation: scroll linear infinite;
     }
 
-    .fast {
-      animation-duration: 10s;
-    }
-
-    .slow {
-      animation-duration: 35s;
-    }
+    .fast { animation-duration: 10s; }
+    .slow { animation-duration: 35s; }
 
     .slide {
       display: flex;
@@ -78,8 +74,11 @@
       margin: 0 10px;
     }
 
+    /* 🔥 tamaño unificado */
     .slide img {
       width: 200px;
+      height: 200px;
+      object-fit: cover;
       border-radius: 10px;
     }
 
@@ -87,6 +86,7 @@
       margin-top: 5px;
       font-size: 14px;
       text-align: center;
+      max-width: 200px;
     }
 
     @keyframes scroll {
@@ -97,9 +97,10 @@
     button {
       background: #f4c430;
       border: none;
-      padding: 10px 20px;
+      padding: 12px 20px;
       cursor: pointer;
       border-radius: 10px;
+      margin-top: auto; /* 🔥 lo baja pero sin perder accesibilidad */
     }
 
   </style>
@@ -143,7 +144,7 @@ async function loadCSV() {
 
   const parsed = rows
     .map(row => row.trim())
-    .filter(row => row !== "") // 🔥 elimina líneas vacías (fix undefined)
+    .filter(row => row !== "")
     .map(row => {
       const cols = row.split(',');
 
@@ -162,20 +163,23 @@ async function loadCSV() {
   buildSections(parsed);
 }
 
-/* BIENVENIDA */
 function buildWelcomeSlider(data) {
   const container = document.getElementById('welcome-slider');
 
   data.forEach(item => {
+    const slide = document.createElement('div');
+    slide.className = 'slide';
+
     const img = document.createElement('img');
     img.src = `assets/img/${item.path}`;
-    container.appendChild(img);
+
+    slide.appendChild(img);
+    container.appendChild(slide);
   });
 
   container.innerHTML += container.innerHTML;
 }
 
-/* SECCIONES */
 function buildSections(data) {
 
   const container = document.getElementById('dynamic-sections');
