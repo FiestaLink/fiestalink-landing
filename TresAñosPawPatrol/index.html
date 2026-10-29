@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#123b70">
+  <meta name="referrer" content="no-referrer">
   <title>¡Tres años de aventura!</title>
   <style>
     :root {
@@ -143,10 +144,9 @@
     }
 
     .photo-frame {
-      display: grid;
+      position: relative;
       width: min(76vw, 310px);
       aspect-ratio: 1 / 1;
-      place-items: center;
       margin: 0 auto 26px;
       padding: 12px;
       color: var(--blue);
@@ -154,29 +154,42 @@
       border: 7px solid var(--yellow);
       border-radius: 28px;
       box-shadow: 0 12px 0 var(--blue), 0 16px 28px rgb(18 59 112 / 16%);
+      overflow: hidden;
     }
 
-    .photo-frame-inner {
-      display: grid;
+    .photo-carousel {
+      display: flex;
       width: 100%;
       height: 100%;
+      transition: transform 650ms ease;
+    }
+
+    .photo-slide {
+      position: relative;
+      flex: 0 0 100%;
+      min-width: 0;
+      display: grid;
       place-items: center;
-      padding: 24px;
+      overflow: hidden;
       background: #f1f7fc;
       border: 2px dashed var(--blue-light);
       border-radius: 15px;
     }
 
-    .photo-frame-inner span {
-      display: block;
-      margin-bottom: 12px;
-      font-size: 3rem;
+    .photo-slide img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    .photo-frame-inner p {
+    .photo-placeholder {
+      padding: 24px;
       font-size: 1rem;
       font-weight: 700;
     }
+    .photo-placeholder[hidden] { display: none; }
 
     .detail-card {
       width: min(100%, 460px);
@@ -225,7 +238,8 @@
       box-shadow: 0 5px 0 var(--yellow);
     }
 
-    .rsvp-button:hover, .dialog-button:hover { background: var(--blue-light); }
+    .rsvp-button:hover:not(:disabled), .dialog-button:hover { background: var(--blue-light); }
+    .rsvp-button:disabled { cursor: not-allowed; opacity: 0.6; }
     .dialog-button.secondary {
       color: var(--blue);
       background: #e8eef4;
@@ -398,6 +412,8 @@
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
       }
+
+      .photo-carousel { transition: none; }
     }
   </style>
 </head>
@@ -418,16 +434,24 @@
 
     <section id="photos">
       <div class="content">
-        <div class="photo-frame" aria-label="Espacio reservado para los retratos">
-          <div class="photo-frame-inner">
-            <div>
-              <span aria-hidden="true">📸</span>
-              <p>Aquí irán los retratos<br>del festejado</p>
+        <div class="photo-frame" aria-label="Fotos del festejado">
+          <div class="photo-carousel" id="photo-carousel">
+            <div class="photo-slide">
+              <span class="photo-placeholder">Agrega fotos/imagen1.jpg</span>
+              <img src="fotos/imagen1.jpg" alt="Foto 1 del festejado">
+            </div>
+            <div class="photo-slide">
+              <span class="photo-placeholder">Agrega fotos/imagen2.jpg</span>
+              <img src="fotos/imagen2.jpg" alt="Foto 2 del festejado">
+            </div>
+            <div class="photo-slide">
+              <span class="photo-placeholder">Agrega fotos/imagen3.jpg</span>
+              <img src="fotos/imagen3.jpg" alt="Foto 3 del festejado">
             </div>
           </div>
         </div>
         <h2>¡Nuestro pequeño héroe!</h2>
-        <p>Muy pronto agregaremos sus fotos favoritas.</p>
+        <p>Sus fotos favoritas irán pasando hacia la derecha.</p>
       </div>
     </section>
 
@@ -447,7 +471,7 @@
         <div class="detail-card">
           <p><span class="detail-label">Fecha y hora</span>Por confirmar</p>
           <p><span class="detail-label">Lugar</span>Por confirmar</p>
-          <p><span class="detail-label">Dirección</span>Por confirmar</p>
+          <p><span class="detail-label">Ubicación</span><a href="https://maps.google.com/" target="_blank" rel="noopener noreferrer">Abrir Google Maps</a></p>
         </div>
       </div>
     </section>
@@ -457,8 +481,8 @@
         <span class="eyebrow">¡Te esperamos!</span>
         <h2>Confirma tu asistencia</h2>
         <p>Nos encantará compartir esta aventura contigo.</p>
-        <div class="rsvp-note">Confirma cuántas personas asistirán en tu grupo.</div>
-        <button class="rsvp-button" id="open-rsvp" type="button">Confirmar asistencia</button>
+        <div class="rsvp-note" aria-live="polite">Abre tu enlace de invitación personal para confirmar asistencia.</div>
+        <button class="rsvp-button" id="open-rsvp" type="button" disabled>Confirmar asistencia</button>
         <div class="paw-divider" aria-hidden="true">🚒 🐾 🎉</div>
       </div>
     </section>
@@ -467,29 +491,20 @@
   <dialog id="rsvp-form-dialog" aria-labelledby="rsvp-form-title">
     <form class="dialog-content" id="rsvp-form">
       <h2 id="rsvp-form-title">Confirma tu asistencia</h2>
-      <p>Déjanos el nombre de quien confirma y el total de personas que asistirán.</p>
-
-      <label for="guest-name">Nombre de quien confirma</label>
-      <input id="guest-name" name="guestName" type="text" maxlength="80" autocomplete="name" required>
+      <p>Invitación para <strong id="guest-name-display"></strong>. Confirma el total de personas que asistirán.</p>
 
       <label for="guest-count">Total de asistentes (incluyéndote)</label>
-      <select id="guest-count" name="guestCount" required>
+      <select id="guest-count" name="guestCount" required disabled>
         <option value="" selected disabled>Selecciona una cantidad</option>
-        <option value="1">1 persona</option>
-        <option value="2">2 personas</option>
-        <option value="3">3 personas</option>
-        <option value="4">4 personas</option>
-        <option value="5">5 personas</option>
-        <option value="6">6 personas</option>
-        <option value="7">7 personas</option>
-        <option value="8">8 personas</option>
-        <option value="9">9 personas</option>
-        <option value="10">10 personas</option>
       </select>
+
+      <label for="guest-email">Correo para recibir la confirmación</label>
+      <input id="guest-email" name="guestEmail" type="email" maxlength="254" autocomplete="email" required>
+      <p class="dialog-note" id="guest-email-note"></p>
 
       <label class="honeypot" aria-hidden="true" for="website">Deja este campo vacío</label>
       <input class="honeypot" id="website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <p class="dialog-note" id="form-storage-note">Por ahora, el desplegable permite grupos de hasta 10 personas. Esta página guardará la respuesta solo en este dispositivo; todavía no se enviará a los anfitriones.</p>
+      <p class="dialog-note">El máximo de asistentes corresponde a esta invitación.</p>
       <p class="error-message" id="form-error" role="alert" hidden></p>
       <div class="dialog-actions">
         <button class="dialog-button secondary" id="cancel-rsvp" type="button">Cancelar</button>
@@ -502,11 +517,11 @@
     <div class="dialog-content">
       <h2 id="rsvp-confirm-title">Revisa tu confirmación</h2>
       <p id="rsvp-summary"></p>
-      <p class="dialog-note" id="confirmation-storage-note">Al confirmar, se guardará una copia en este dispositivo y podrás imprimir o guardar tu comprobante como PDF.</p>
+      <p class="dialog-note" id="confirmation-storage-note"></p>
       <p class="error-message" id="storage-error" role="alert" hidden></p>
       <div class="dialog-actions">
         <button class="dialog-button secondary" id="edit-rsvp" type="button">Editar</button>
-        <button class="dialog-button" id="confirm-rsvp" type="button">Confirmar y crear PDF</button>
+        <button class="dialog-button" id="confirm-rsvp" type="button">Confirmar y enviar comprobante</button>
       </div>
     </div>
   </dialog>
@@ -546,31 +561,55 @@
       window.setInterval(createFloater, 4000);
     }
 
-    const storageKey = 'tres-anos-paw-patrol-confirmaciones';
     const formDialog = document.getElementById('rsvp-form-dialog');
     const confirmDialog = document.getElementById('rsvp-confirm-dialog');
     const rsvpForm = document.getElementById('rsvp-form');
-    const guestNameInput = document.getElementById('guest-name');
+    const guestNameDisplay = document.getElementById('guest-name-display');
     const guestCountSelect = document.getElementById('guest-count');
+    const guestEmailInput = document.getElementById('guest-email');
+    const guestEmailNote = document.getElementById('guest-email-note');
     const formError = document.getElementById('form-error');
     const storageError = document.getElementById('storage-error');
     const rsvpSummary = document.getElementById('rsvp-summary');
-    const formStorageNote = document.getElementById('form-storage-note');
     const confirmationStorageNote = document.getElementById('confirmation-storage-note');
     const rsvpNote = document.querySelector('.rsvp-note');
+    const openRsvpButton = document.getElementById('open-rsvp');
     const confirmButton = document.getElementById('confirm-rsvp');
+    const invitationToken = new URLSearchParams(window.location.hash.slice(1)).get('invitacion') || '';
+    const photoCarousel = document.getElementById('photo-carousel');
     let pendingConfirmation;
+    let guest;
 
-    if (RSVP_ENDPOINT) {
-      formStorageNote.textContent = 'El desplegable permite grupos de hasta 10 personas. Tu respuesta se enviará a los anfitriones mediante Google Sheets.';
-      confirmationStorageNote.textContent = 'Al confirmar, tu respuesta se enviará a los anfitriones. Después podrás imprimir o guardar tu comprobante como PDF.';
-      rsvpNote.textContent = 'Confirma cuántas personas asistirán en tu grupo. La respuesta llegará a los anfitriones.';
+    document.querySelectorAll('.photo-slide img').forEach((image) => {
+      const placeholder = image.previousElementSibling;
+      image.hidden = true;
+      image.addEventListener('load', () => {
+        placeholder.hidden = true;
+        image.hidden = false;
+      }, { once: true });
+      image.addEventListener('error', () => {
+        image.hidden = true;
+      }, { once: true });
+      if (image.complete) {
+        if (image.naturalWidth > 0) {
+          placeholder.hidden = true;
+          image.hidden = false;
+        }
+      }
+    });
+
+    if (!reducedMotion.matches) {
+      let photoIndex = 0;
+      window.setInterval(() => {
+        photoIndex = (photoIndex + 1) % photoCarousel.children.length;
+        photoCarousel.style.transform = `translateX(-${photoIndex * 100}%)`;
+      }, 5000);
     }
 
-    document.getElementById('open-rsvp').addEventListener('click', () => {
+    openRsvpButton.addEventListener('click', () => {
       formError.hidden = true;
       formDialog.showModal();
-      guestNameInput.focus();
+      guestCountSelect.focus();
     });
 
     document.getElementById('cancel-rsvp').addEventListener('click', () => {
@@ -582,17 +621,23 @@
       if (!rsvpForm.reportValidity()) return;
 
       pendingConfirmation = {
-        name: guestNameInput.value.trim(),
-        count: Number(guestCountSelect.value)
+        name: guest.name,
+        count: Number(guestCountSelect.value),
+        email: guestEmailInput.value.trim(),
+        token: invitationToken
       };
 
-      if (!pendingConfirmation.name || !Number.isInteger(pendingConfirmation.count)) {
-        formError.textContent = 'Escribe tu nombre y selecciona el número de asistentes.';
+      if (!Number.isInteger(pendingConfirmation.count) ||
+          pendingConfirmation.count < 1 ||
+          pendingConfirmation.count > guest.maxCount ||
+          !guestEmailInput.validity.valid) {
+        formError.textContent = 'Verifica el número de asistentes y el correo electrónico.';
         formError.hidden = false;
         return;
       }
 
-      rsvpSummary.textContent = `${pendingConfirmation.name} — ${pendingConfirmation.count} ${pendingConfirmation.count === 1 ? 'persona' : 'personas'}.`;
+      rsvpSummary.textContent = `${pendingConfirmation.name} — ${pendingConfirmation.count} ${pendingConfirmation.count === 1 ? 'persona' : 'personas'}. Comprobante para ${pendingConfirmation.email}, con copia para los anfitriones.`;
+      confirmationStorageNote.textContent = 'La confirmación quedará registrada y recibirás un comprobante PDF por correo.';
       storageError.hidden = true;
       formDialog.close();
       confirmDialog.showModal();
@@ -601,7 +646,7 @@
     document.getElementById('edit-rsvp').addEventListener('click', () => {
       confirmDialog.close();
       formDialog.showModal();
-      guestNameInput.focus();
+      guestCountSelect.focus();
     });
 
     function createConfirmationId() {
@@ -611,9 +656,10 @@
       return `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
     }
 
-    function checkRemoteStatus(id) {
+    function requestJsonp(action, params) {
       return new Promise((resolve, reject) => {
-        const callbackName = `rsvpStatus_${createConfirmationId().replace(/-/g, '_')}`;
+        const callbackPrefix = action === 'guest' ? 'rsvpGuest_' : 'rsvpStatus_';
+        const callbackName = callbackPrefix + createConfirmationId().replace(/-/g, '_');
         const script = document.createElement('script');
         let timeoutId;
 
@@ -629,16 +675,16 @@
         };
         script.onerror = () => {
           cleanup();
-          reject(new Error('No se pudo consultar Google Sheets.'));
+          reject(new Error('No se pudo consultar la invitación.'));
         };
         timeoutId = window.setTimeout(() => {
           cleanup();
-          reject(new Error('Se agotó el tiempo al consultar Google Sheets.'));
+          reject(new Error('Se agotó el tiempo al consultar la invitación.'));
         }, 8000);
 
         const url = new URL(RSVP_ENDPOINT);
-        url.searchParams.set('action', 'status');
-        url.searchParams.set('id', id);
+        url.searchParams.set('action', action);
+        url.searchParams.set('token', params.token);
         url.searchParams.set('callback', callbackName);
         url.searchParams.set('_', String(Date.now()));
         script.src = url.toString();
@@ -646,23 +692,55 @@
       });
     }
 
-    async function waitForRemoteConfirmation(id) {
+    async function loadGuest() {
+      if (!/^[a-f0-9]{48}$/i.test(invitationToken)) {
+        rsvpNote.textContent = 'Este formulario requiere el enlace personal incluido en tu invitación.';
+        return;
+      }
+
+      try {
+        const result = await requestJsonp('guest', { token: invitationToken });
+        if (result.status !== 'ready') {
+          throw new Error(result.message || 'Esta invitación no está disponible.');
+        }
+
+        guest = result.guest;
+        guestNameDisplay.textContent = guest.name;
+        guestEmailInput.value = guest.email;
+        guestEmailNote.textContent = `Correo preregistrado: ${guest.email}. Puedes cambiarlo si prefieres recibir el comprobante en otra dirección.`;
+        guestCountSelect.replaceChildren(new Option('Selecciona una cantidad', '', true, true));
+        for (let count = 1; count <= guest.maxCount; count += 1) {
+          guestCountSelect.add(new Option(`${count} ${count === 1 ? 'persona' : 'personas'}`, String(count)));
+        }
+        guestCountSelect.disabled = false;
+        openRsvpButton.disabled = false;
+        rsvpNote.textContent = `Tu invitación permite confirmar hasta ${guest.maxCount} ${guest.maxCount === 1 ? 'persona' : 'personas'}.`;
+      } catch (error) {
+        console.error('No se pudo cargar la invitación.', error);
+        rsvpNote.textContent = error.message;
+      }
+    }
+
+    loadGuest();
+
+    async function waitForRemoteConfirmation(token) {
       const deadline = Date.now() + 20000;
       while (Date.now() < deadline) {
-        const result = await checkRemoteStatus(id);
+        const result = await requestJsonp('status', { token });
         if (result.status === 'confirmed') return;
         if (result.status === 'error') {
-          throw new Error(result.message || 'Google Sheets no pudo verificar la confirmación.');
+          throw new Error(result.message || 'No se pudo verificar el envío del comprobante.');
         }
         await new Promise(resolve => window.setTimeout(resolve, 1200));
       }
-      throw new Error('Google Sheets no confirmó el registro a tiempo. Revisa la hoja antes de volver a enviarlo.');
+      throw new Error('La confirmación no se completó a tiempo. Revisa tu correo antes de volver a intentarlo.');
     }
 
     async function saveRemoteConfirmation(confirmation) {
       const body = new URLSearchParams({
         id: confirmation.id,
-        name: confirmation.name,
+        token: confirmation.token,
+        email: confirmation.email,
         count: String(confirmation.count),
         website: document.getElementById('website').value
       });
@@ -672,21 +750,7 @@
         mode: 'no-cors',
         body
       });
-      await waitForRemoteConfirmation(confirmation.id);
-    }
-
-    function saveLocalConfirmation(confirmation) {
-      const saved = localStorage.getItem(storageKey);
-      const confirmations = saved ? JSON.parse(saved) : [];
-      if (!Array.isArray(confirmations)) {
-        throw new Error('El registro guardado no tiene el formato esperado.');
-      }
-      confirmations.push({
-        name: confirmation.name,
-        count: confirmation.count,
-        confirmedAt: confirmation.confirmedAt
-      });
-      localStorage.setItem(storageKey, JSON.stringify(confirmations));
+      await waitForRemoteConfirmation(confirmation.token);
     }
 
     confirmButton.addEventListener('click', async () => {
@@ -699,23 +763,17 @@
       };
 
       confirmButton.disabled = true;
-      confirmButton.textContent = 'Guardando...';
+      confirmButton.textContent = 'Enviando comprobante...';
       storageError.hidden = true;
 
       try {
-        if (RSVP_ENDPOINT) {
-          await saveRemoteConfirmation(confirmation);
-        } else {
-          saveLocalConfirmation(confirmation);
-        }
+        await saveRemoteConfirmation(confirmation);
       } catch (error) {
         console.error('No se pudo guardar la confirmación.', error);
-        storageError.textContent = RSVP_ENDPOINT
-          ? `${error.message} Todavía no se ha creado el PDF.`
-          : 'No se pudo guardar la confirmación en este dispositivo. Revisa el almacenamiento del navegador e inténtalo de nuevo. Todavía no se ha creado el PDF.';
+        storageError.textContent = error.message;
         storageError.hidden = false;
         confirmButton.disabled = false;
-        confirmButton.textContent = 'Confirmar y crear PDF';
+        confirmButton.textContent = 'Confirmar y enviar comprobante';
         return;
       }
 
