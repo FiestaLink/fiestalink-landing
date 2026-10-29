@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#123b70">
+  <title>¡Tres años de aventura!</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --blue: #123b70;
+      --blue-light: #1d5b9e;
+      --red: #e53935;
+      --yellow: #ffd329;
+      --white: #fff;
+      --ink: #183451;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: var(--white);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .ribbon {
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      width: 100%;
+      height: 12px;
+      background: var(--blue);
+      border-bottom: 4px solid var(--yellow);
+    }
+
+    .ribbon-top { top: 0; }
+    .ribbon-bottom {
+      bottom: 0;
+      border-top: 4px solid var(--yellow);
+      border-bottom: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    section {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100svh;
+      padding: 40px 24px;
+      overflow: hidden;
+      text-align: center;
+      scroll-snap-align: start;
+      background: var(--white);
+    }
+
+    section:nth-child(even) { background: #f1f7fc; }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 650px);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 16px;
+      padding: 8px 18px;
+      color: var(--blue);
+      background: var(--yellow);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, p { margin-top: 0; }
+
+    h1 {
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: clamp(2.7rem, 12vw, 5.5rem);
+      line-height: 0.98;
+    }
+
+    h2 {
+      margin-bottom: 18px;
+      color: var(--blue);
+      font-size: clamp(2rem, 8vw, 3.5rem);
+    }
+
+    p {
+      margin-bottom: 0;
+      font-size: clamp(1.05rem, 4vw, 1.3rem);
+      line-height: 1.65;
+    }
+
+    .three {
+      display: inline-grid;
+      width: 1.15em;
+      height: 1.15em;
+      place-items: center;
+      margin: 8px 0;
+      color: var(--blue);
+      background: var(--yellow);
+      border: 5px solid var(--red);
+      border-radius: 50%;
+      font-size: 0.78em;
+      line-height: 1;
+      vertical-align: middle;
+    }
+
+    .accent { color: var(--red); }
+
+    .paw-divider {
+      margin-top: 24px;
+      color: var(--red);
+      font-size: 1.8rem;
+      letter-spacing: 0.35em;
+    }
+
+    .photo-frame {
+      display: grid;
+      width: min(76vw, 310px);
+      aspect-ratio: 1 / 1;
+      place-items: center;
+      margin: 0 auto 26px;
+      padding: 12px;
+      color: var(--blue);
+      background: var(--white);
+      border: 7px solid var(--yellow);
+      border-radius: 28px;
+      box-shadow: 0 12px 0 var(--blue), 0 16px 28px rgb(18 59 112 / 16%);
+    }
+
+    .photo-frame-inner {
+      display: grid;
+      width: 100%;
+      height: 100%;
+      place-items: center;
+      padding: 24px;
+      background: #f1f7fc;
+      border: 2px dashed var(--blue-light);
+      border-radius: 15px;
+    }
+
+    .photo-frame-inner span {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 3rem;
+    }
+
+    .photo-frame-inner p {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .detail-card {
+      width: min(100%, 460px);
+      margin: 10px auto 0;
+      padding: 22px 26px;
+      background: var(--white);
+      border: 3px solid var(--blue);
+      border-radius: 20px;
+      box-shadow: 6px 6px 0 var(--yellow);
+    }
+
+    .detail-card p + p { margin-top: 12px; }
+
+    .detail-label {
+      display: block;
+      color: var(--red);
+      font-size: 0.8em;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .rsvp-note {
+      margin-top: 22px;
+      padding: 12px 18px;
+      color: var(--blue);
+      background: var(--yellow);
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .rsvp-button, .dialog-button {
+      padding: 13px 22px;
+      color: var(--white);
+      background: var(--blue);
+      border: 0;
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .rsvp-button {
+      margin-top: 24px;
+      box-shadow: 0 5px 0 var(--yellow);
+    }
+
+    .rsvp-button:hover, .dialog-button:hover { background: var(--blue-light); }
+    .dialog-button.secondary {
+      color: var(--blue);
+      background: #e8eef4;
+    }
+
+    .dialog-button.secondary:hover { background: #dce6ef; }
+    .rsvp-button:focus-visible, .dialog-button:focus-visible,
+    input:focus-visible, select:focus-visible {
+      outline: 3px solid var(--red);
+      outline-offset: 3px;
+    }
+
+    dialog {
+      width: min(calc(100% - 32px), 460px);
+      max-height: min(90vh, 720px);
+      padding: 0;
+      color: var(--ink);
+      background: var(--white);
+      border: 4px solid var(--yellow);
+      border-radius: 22px;
+      box-shadow: 0 20px 60px rgb(0 0 0 / 30%);
+    }
+
+    dialog::backdrop { background: rgb(8 28 53 / 72%); }
+
+    .dialog-content { padding: 28px; }
+    .dialog-content h2 { font-size: 1.8rem; }
+    .dialog-content p {
+      margin-bottom: 18px;
+      font-size: 1rem;
+    }
+
+    .dialog-content label {
+      display: block;
+      margin: 18px 0 7px;
+      color: var(--blue);
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .dialog-content input, .dialog-content select {
+      width: 100%;
+      min-height: 46px;
+      padding: 10px 12px;
+      color: var(--ink);
+      background: var(--white);
+      border: 2px solid #b7c8d8;
+      border-radius: 10px;
+      font: inherit;
+    }
+
+    .honeypot {
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .dialog-note {
+      margin-top: 12px;
+      color: #536b82;
+      font-size: 0.88rem !important;
+      text-align: left;
+    }
+
+    .dialog-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .error-message {
+      margin-top: 16px !important;
+      padding: 12px;
+      color: #8a1715;
+      background: #fff0ef;
+      border: 1px solid var(--red);
+      border-radius: 10px;
+    }
+
+    #pdf-receipt { display: none; }
+
+    .scroll-hint {
+      margin-top: 34px;
+      color: var(--blue-light);
+      font-size: 0.95rem;
+      animation: nudge 1.6s ease-in-out infinite;
+    }
+
+    .floater {
+      position: fixed;
+      z-index: 5;
+      bottom: -60px;
+      pointer-events: none;
+      animation: float-up linear forwards;
+      opacity: 0.8;
+    }
+
+    @keyframes float-up {
+      from { transform: translateY(0) rotate(0); opacity: 0; }
+      10% { opacity: 0.8; }
+      to { transform: translateY(-115vh) rotate(220deg); opacity: 0; }
+    }
+
+    @keyframes nudge {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(7px); }
+    }
+
+    @media (max-height: 650px) {
+      section { padding-top: 32px; padding-bottom: 32px; }
+      .photo-frame { width: min(48vh, 240px); margin-bottom: 18px; }
+      .paw-divider { margin-top: 14px; }
+    }
+
+    @media print {
+      @page { margin: 18mm; }
+
+      html, body {
+        width: auto;
+        height: auto;
+        overflow: visible;
+        background: var(--white);
+      }
+
+      body * { visibility: hidden !important; }
+      .ribbon, .container, dialog, .floater { display: none !important; }
+
+      #pdf-receipt, #pdf-receipt * { visibility: visible !important; }
+
+      #pdf-receipt {
+        position: absolute;
+        inset: 0 auto auto 0;
+        display: block;
+        width: 100%;
+        min-height: 0;
+        height: auto;
+        padding: 32px;
+        overflow: visible;
+        color: var(--ink);
+        background: var(--white);
+        border: 4px solid var(--blue);
+        border-radius: 18px;
+        text-align: center;
+        scroll-snap-align: none;
+      }
+
+      #pdf-receipt h1 {
+        margin: 18px 0;
+        font-size: 32pt;
+      }
+
+      #pdf-receipt p { margin: 12px 0; }
+      #pdf-receipt .receipt-badge {
+        display: inline-block;
+        padding: 8px 14px;
+        color: var(--blue);
+        background: var(--yellow);
+        border-radius: 999px;
+        font-weight: 700;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ribbon ribbon-top" aria-hidden="true"></div>
+  <div class="ribbon ribbon-bottom" aria-hidden="true"></div>
+
+  <main class="container" aria-label="Invitación de cumpleaños">
+    <section id="welcome">
+      <div class="content">
+        <span class="eyebrow">¡Prepárate para la aventura!</span>
+        <h1>Tres años<br>de diversión</h1>
+        <p>Te invitamos a celebrar un cumpleaños muy especial con temática <span class="accent">Paw Patrol</span>.</p>
+        <div class="paw-divider" aria-hidden="true">★ 🐾 ★</div>
+        <div class="scroll-hint">Desliza para descubrir más ↓</div>
+      </div>
+    </section>
+
+    <section id="photos">
+      <div class="content">
+        <div class="photo-frame" aria-label="Espacio reservado para los retratos">
+          <div class="photo-frame-inner">
+            <div>
+              <span aria-hidden="true">📸</span>
+              <p>Aquí irán los retratos<br>del festejado</p>
+            </div>
+          </div>
+        </div>
+        <h2>¡Nuestro pequeño héroe!</h2>
+        <p>Muy pronto agregaremos sus fotos favoritas.</p>
+      </div>
+    </section>
+
+    <section id="message">
+      <div class="content">
+        <span class="eyebrow">Misión especial</span>
+        <h2>¡Acompáñanos!</h2>
+        <p>Prepara tu mejor sonrisa y ven a celebrar con nosotros tres años llenos de juegos, cariño y grandes aventuras.</p>
+        <div class="paw-divider" aria-hidden="true">🐾 🎈 🐾</div>
+      </div>
+    </section>
+
+    <section id="details">
+      <div class="content">
+        <span class="eyebrow">Coordenadas de la misión</span>
+        <h2>Detalles de la fiesta</h2>
+        <div class="detail-card">
+          <p><span class="detail-label">Fecha y hora</span>Por confirmar</p>
+          <p><span class="detail-label">Lugar</span>Por confirmar</p>
+          <p><span class="detail-label">Dirección</span>Por confirmar</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="rsvp">
+      <div class="content">
+        <span class="eyebrow">¡Te esperamos!</span>
+        <h2>Confirma tu asistencia</h2>
+        <p>Nos encantará compartir esta aventura contigo.</p>
+        <div class="rsvp-note">Confirma cuántas personas asistirán en tu grupo.</div>
+        <button class="rsvp-button" id="open-rsvp" type="button">Confirmar asistencia</button>
+        <div class="paw-divider" aria-hidden="true">🚒 🐾 🎉</div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="rsvp-form-dialog" aria-labelledby="rsvp-form-title">
+    <form class="dialog-content" id="rsvp-form">
+      <h2 id="rsvp-form-title">Confirma tu asistencia</h2>
+      <p>Déjanos el nombre de quien confirma y el total de personas que asistirán.</p>
+
+      <label for="guest-name">Nombre de quien confirma</label>
+      <input id="guest-name" name="guestName" type="text" maxlength="80" autocomplete="name" required>
+
+      <label for="guest-count">Total de asistentes (incluyéndote)</label>
+      <select id="guest-count" name="guestCount" required>
+        <option value="" selected disabled>Selecciona una cantidad</option>
+        <option value="1">1 persona</option>
+        <option value="2">2 personas</option>
+        <option value="3">3 personas</option>
+        <option value="4">4 personas</option>
+        <option value="5">5 personas</option>
+        <option value="6">6 personas</option>
+        <option value="7">7 personas</option>
+        <option value="8">8 personas</option>
+        <option value="9">9 personas</option>
+        <option value="10">10 personas</option>
+      </select>
+
+      <label class="honeypot" aria-hidden="true" for="website">Deja este campo vacío</label>
+      <input class="honeypot" id="website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="dialog-note" id="form-storage-note">Por ahora, el desplegable permite grupos de hasta 10 personas. Esta página guardará la respuesta solo en este dispositivo; todavía no se enviará a los anfitriones.</p>
+      <p class="error-message" id="form-error" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button class="dialog-button secondary" id="cancel-rsvp" type="button">Cancelar</button>
+        <button class="dialog-button" type="submit">Continuar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="rsvp-confirm-dialog" aria-labelledby="rsvp-confirm-title">
+    <div class="dialog-content">
+      <h2 id="rsvp-confirm-title">Revisa tu confirmación</h2>
+      <p id="rsvp-summary"></p>
+      <p class="dialog-note" id="confirmation-storage-note">Al confirmar, se guardará una copia en este dispositivo y podrás imprimir o guardar tu comprobante como PDF.</p>
+      <p class="error-message" id="storage-error" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button class="dialog-button secondary" id="edit-rsvp" type="button">Editar</button>
+        <button class="dialog-button" id="confirm-rsvp" type="button">Confirmar y crear PDF</button>
+      </div>
+    </div>
+  </dialog>
+
+  <section id="pdf-receipt" aria-label="Comprobante de confirmación">
+    <span class="receipt-badge">¡Confirmación de asistencia!</span>
+    <h1>Tres años de aventura</h1>
+    <p>Gracias por confirmar. ¡Te esperamos para celebrar!</p>
+    <p><strong>Nombre:</strong> <span id="receipt-name"></span></p>
+    <p><strong>Total de asistentes:</strong> <span id="receipt-count"></span></p>
+    <p><strong>Fecha de confirmación:</strong> <span id="receipt-date"></span></p>
+    <p>Temática Paw Patrol 🐾</p>
+  </section>
+
+  <script>
+    // Pega aquí la URL /exec de la implementación web de Google Apps Script.
+    const RSVP_ENDPOINT = '';
+    const emojis = ['🐾', '⭐', '🎈', '🦴', '🚒', '🎉'];
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function createFloater() {
+      if (reducedMotion.matches) return;
+
+      const floater = document.createElement('span');
+      floater.className = 'floater';
+      floater.setAttribute('aria-hidden', 'true');
+      floater.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      floater.style.left = `${Math.random() * 92}vw`;
+      floater.style.fontSize = `${1.2 + Math.random() * 1.2}rem`;
+      floater.style.animationDuration = `${14 + Math.random() * 10}s`;
+      document.body.appendChild(floater);
+      floater.addEventListener('animationend', () => floater.remove(), { once: true });
+    }
+
+    if (!reducedMotion.matches) {
+      createFloater();
+      window.setInterval(createFloater, 4000);
+    }
+
+    const storageKey = 'tres-anos-paw-patrol-confirmaciones';
+    const formDialog = document.getElementById('rsvp-form-dialog');
+    const confirmDialog = document.getElementById('rsvp-confirm-dialog');
+    const rsvpForm = document.getElementById('rsvp-form');
+    const guestNameInput = document.getElementById('guest-name');
+    const guestCountSelect = document.getElementById('guest-count');
+    const formError = document.getElementById('form-error');
+    const storageError = document.getElementById('storage-error');
+    const rsvpSummary = document.getElementById('rsvp-summary');
+    const formStorageNote = document.getElementById('form-storage-note');
+    const confirmationStorageNote = document.getElementById('confirmation-storage-note');
+    const rsvpNote = document.querySelector('.rsvp-note');
+    const confirmButton = document.getElementById('confirm-rsvp');
+    let pendingConfirmation;
+
+    if (RSVP_ENDPOINT) {
+      formStorageNote.textContent = 'El desplegable permite grupos de hasta 10 personas. Tu respuesta se enviará a los anfitriones mediante Google Sheets.';
+      confirmationStorageNote.textContent = 'Al confirmar, tu respuesta se enviará a los anfitriones. Después podrás imprimir o guardar tu comprobante como PDF.';
+      rsvpNote.textContent = 'Confirma cuántas personas asistirán en tu grupo. La respuesta llegará a los anfitriones.';
+    }
+
+    document.getElementById('open-rsvp').addEventListener('click', () => {
+      formError.hidden = true;
+      formDialog.showModal();
+      guestNameInput.focus();
+    });
+
+    document.getElementById('cancel-rsvp').addEventListener('click', () => {
+      formDialog.close();
+    });
+
+    rsvpForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!rsvpForm.reportValidity()) return;
+
+      pendingConfirmation = {
+        name: guestNameInput.value.trim(),
+        count: Number(guestCountSelect.value)
+      };
+
+      if (!pendingConfirmation.name || !Number.isInteger(pendingConfirmation.count)) {
+        formError.textContent = 'Escribe tu nombre y selecciona el número de asistentes.';
+        formError.hidden = false;
+        return;
+      }
+
+      rsvpSummary.textContent = `${pendingConfirmation.name} — ${pendingConfirmation.count} ${pendingConfirmation.count === 1 ? 'persona' : 'personas'}.`;
+      storageError.hidden = true;
+      formDialog.close();
+      confirmDialog.showModal();
+    });
+
+    document.getElementById('edit-rsvp').addEventListener('click', () => {
+      confirmDialog.close();
+      formDialog.showModal();
+      guestNameInput.focus();
+    });
+
+    function createConfirmationId() {
+      if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+        return window.crypto.randomUUID();
+      }
+      return `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+    }
+
+    function checkRemoteStatus(id) {
+      return new Promise((resolve, reject) => {
+        const callbackName = `rsvpStatus_${createConfirmationId().replace(/-/g, '_')}`;
+        const script = document.createElement('script');
+        let timeoutId;
+
+        function cleanup() {
+          window.clearTimeout(timeoutId);
+          delete window[callbackName];
+          script.remove();
+        }
+
+        window[callbackName] = (result) => {
+          cleanup();
+          resolve(result);
+        };
+        script.onerror = () => {
+          cleanup();
+          reject(new Error('No se pudo consultar Google Sheets.'));
+        };
+        timeoutId = window.setTimeout(() => {
+          cleanup();
+          reject(new Error('Se agotó el tiempo al consultar Google Sheets.'));
+        }, 8000);
+
+        const url = new URL(RSVP_ENDPOINT);
+        url.searchParams.set('action', 'status');
+        url.searchParams.set('id', id);
+        url.searchParams.set('callback', callbackName);
+        url.searchParams.set('_', String(Date.now()));
+        script.src = url.toString();
+        document.body.appendChild(script);
+      });
+    }
+
+    async function waitForRemoteConfirmation(id) {
+      const deadline = Date.now() + 20000;
+      while (Date.now() < deadline) {
+        const result = await checkRemoteStatus(id);
+        if (result.status === 'confirmed') return;
+        if (result.status === 'error') {
+          throw new Error(result.message || 'Google Sheets no pudo verificar la confirmación.');
+        }
+        await new Promise(resolve => window.setTimeout(resolve, 1200));
+      }
+      throw new Error('Google Sheets no confirmó el registro a tiempo. Revisa la hoja antes de volver a enviarlo.');
+    }
+
+    async function saveRemoteConfirmation(confirmation) {
+      const body = new URLSearchParams({
+        id: confirmation.id,
+        name: confirmation.name,
+        count: String(confirmation.count),
+        website: document.getElementById('website').value
+      });
+
+      await fetch(RSVP_ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors',
+        body
+      });
+      await waitForRemoteConfirmation(confirmation.id);
+    }
+
+    function saveLocalConfirmation(confirmation) {
+      const saved = localStorage.getItem(storageKey);
+      const confirmations = saved ? JSON.parse(saved) : [];
+      if (!Array.isArray(confirmations)) {
+        throw new Error('El registro guardado no tiene el formato esperado.');
+      }
+      confirmations.push({
+        name: confirmation.name,
+        count: confirmation.count,
+        confirmedAt: confirmation.confirmedAt
+      });
+      localStorage.setItem(storageKey, JSON.stringify(confirmations));
+    }
+
+    confirmButton.addEventListener('click', async () => {
+      if (!pendingConfirmation) return;
+
+      const confirmation = {
+        ...pendingConfirmation,
+        confirmedAt: new Date().toISOString(),
+        id: createConfirmationId()
+      };
+
+      confirmButton.disabled = true;
+      confirmButton.textContent = 'Guardando...';
+      storageError.hidden = true;
+
+      try {
+        if (RSVP_ENDPOINT) {
+          await saveRemoteConfirmation(confirmation);
+        } else {
+          saveLocalConfirmation(confirmation);
+        }
+      } catch (error) {
+        console.error('No se pudo guardar la confirmación.', error);
+        storageError.textContent = RSVP_ENDPOINT
+          ? `${error.message} Todavía no se ha creado el PDF.`
+          : 'No se pudo guardar la confirmación en este dispositivo. Revisa el almacenamiento del navegador e inténtalo de nuevo. Todavía no se ha creado el PDF.';
+        storageError.hidden = false;
+        confirmButton.disabled = false;
+        confirmButton.textContent = 'Confirmar y crear PDF';
+        return;
+      }
+
+      document.getElementById('receipt-name').textContent = confirmation.name;
+      document.getElementById('receipt-count').textContent = `${confirmation.count} ${confirmation.count === 1 ? 'persona' : 'personas'}`;
+      document.getElementById('receipt-date').textContent = new Date(confirmation.confirmedAt).toLocaleString('es-MX');
+      confirmDialog.close();
+      window.print();
+    });
+  </script>
+</body>
+</html>
