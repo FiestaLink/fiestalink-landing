@@ -2,6 +2,7 @@ const SPREADSHEET_ID = '1Sn6BIgEQGa92ZcTe-UZRWoAYxaxZhnFmob6HqPA6Z1U';
 const RESPONSE_SHEET_NAME = 'Confirmaciones';
 const GUEST_SHEET_NAME = 'Invitados';
 const CONFIRMATION_CC_EMAIL = 'burrolala@icloud.com';
+const INVITATION_PAGE_URL = 'https://fiestalink.github.io/fiestalink-landing/TresA%C3%B1osPawPatrol/';
 const RESPONSE_HEADERS = [
   'ID',
   'Fecha de confirmación',
@@ -26,6 +27,18 @@ function doPost(e) {
   }
 
   try {
+    const action = String(params.action || 'confirm');
+    if (action === 'recover') {
+      requestInvitationRecovery(String(params.email || '').trim());
+      return jsonResponse({
+        ok: true,
+        message: 'Si el correo está registrado, recibirás tus enlaces de invitación.'
+      });
+    }
+    if (action !== 'confirm') {
+      return jsonResponse({ ok: false, error: 'Solicitud inválida.' });
+    }
+
     const id = String(params.id || '').trim();
     const token = String(params.token || '').trim();
     const count = Number(params.count);
@@ -59,14 +72,24 @@ function doPost(e) {
           error: 'El número de asistentes supera el máximo de esta invitación.'
         });
       }
-      if (guest.confirmation.toLowerCase() === 'confirmado') {
-        return jsonResponse({ ok: false, error: 'Esta invitación ya fue confirmada.' });
-      }
-
       responseSheet = getResponseSheet();
       const existingRow = findResponseRowByToken(responseSheet, token);
       if (existingRow !== -1) {
-        return jsonResponse({ ok: true, id: id, status: 'confirmed' });
+        const status = getConfirmationStatus(responseSheet, token);
+        return jsonResponse({
+          ok: status.emailStatus === 'sent',
+          id: id,
+          status: status.status,
+          emailStatus: status.emailStatus
+        });
+      }
+      if (guest.confirmation.toLowerCase() === 'confirmado') {
+        return jsonResponse({
+          ok: false,
+          status: 'confirmed',
+          emailStatus: 'not_sent',
+          error: 'Esta invitación ya fue confirmada. No se encontró un registro de correo enviado.'
+        });
       }
 
       responseRow = responseSheet.getLastRow() + 1;
@@ -124,17 +147,26 @@ function doGet(e) {
         result = { status: 'error', message: 'El enlace de invitación no es válido.' };
       } else {
         const guest = findGuestByToken(getGuestSheet(), token);
-        if (!guest || guest.confirmation.toLowerCase() === 'confirmado') {
+        if (!guest) {
           result = { status: 'error', message: 'Esta invitación no está disponible.' };
         } else {
-          result = {
-            status: 'ready',
-            guest: {
-              name: guest.name,
-              email: guest.email,
-              maxCount: guest.maxCount
-            }
-          };
+          const confirmation = getConfirmationStatus(getResponseSheet(), token);
+          if (confirmation.status === 'confirmed') {
+            result = confirmation;
+          } else if (confirmation.emailStatus === 'pending') {
+            result = { status: 'confirmed', emailStatus: 'pending' };
+          } else if (guest.confirmation.toLowerCase() === 'confirmado') {
+            result = { status: 'confirmed', emailStatus: 'not_sent' };
+          } else {
+            result = {
+              status: 'ready',
+              guest: {
+                name: guest.name,
+                email: guest.email,
+                maxCount: guest.maxCount
+              }
+            };
+          }
         }
       }
     } else {
@@ -142,23 +174,7 @@ function doGet(e) {
       if (!/^[a-f0-9]{48}$/i.test(token)) {
         result = { status: 'error', message: 'Código de invitación inválido.' };
       } else {
-        const sheet = getResponseSheet();
-        const row = findResponseRowByToken(sheet, token);
-        if (row === -1) {
-          result = { status: 'pending' };
-        } else {
-          const emailStatus = String(sheet.getRange(row, 7).getValue());
-          if (emailStatus === 'Enviado') {
-            result = { status: 'confirmed' };
-          } else if (emailStatus === 'Error') {
-            result = {
-              status: 'error',
-              message: 'La confirmación quedó guardada, pero no se pudo enviar el correo. Contacta a los anfitriones.'
-            };
-          } else {
-            result = { status: 'pending' };
-          }
-        }
+        result = getConfirmationStatus(getResponseSheet(), token);
       }
     }
   } catch (error) {
@@ -178,6 +194,99 @@ function doGet(e) {
   return ContentService.createTextOutput(
     callback + '(' + json + ');'
   ).setMimeType(ContentService.MimeType.JAVASCRIPT);
+}
+
+function getConfirmationStatus(sheet, token) {
+  const row = findResponseRowByToken(sheet, token);
+  if (row === -1) {
+    return { status: 'pending' };
+  }
+
+  const emailStatus = String(sheet.getRange(row, 7).getValue());
+  if (emailStatus === 'Enviado') {
+    return { status: 'confirmed', emailStatus: 'sent' };
+  }
+  if (emailStatus === 'Error') {
+    return { status: 'confirmed', emailStatus: 'error' };
+  }
+  return { status: 'pending', emailStatus: 'pending' };
+}
+
+function requestInvitationRecovery(email) {
+  const normalizedEmail = email.toLowerCase();
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const cache = CacheService.getScriptCache();
+    const emailKey = 'rsvp-recovery:' + hashEmail(normalizedEmail);
+    const minuteKey = 'rsvp-recovery-minute:' + Math.floor(Date.now() / 60000);
+    const requestsThisMinute = Number(cache.get(minuteKey) || 0);
+    if (cache.get(emailKey) || requestsThisMinute >= 10) {
+      return;
+    }
+    cache.put(emailKey, '1', 300);
+    cache.put(minuteKey, String(requestsThisMinute + 1), 120);
+  } finally {
+    lock.releaseLock();
+  }
+
+  if (!isValidEmail(normalizedEmail)) {
+    return;
+  }
+
+  const sheet = getGuestSheet();
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) {
+    return;
+  }
+
+  const guests = sheet.getRange(2, 1, lastRow - 1, GUEST_HEADERS.length).getValues()
+    .filter(function (row) {
+      return String(row[2]).trim().toLowerCase() === normalizedEmail;
+    })
+    .map(function (row) {
+      return {
+        name: String(row[1]).trim(),
+        token: String(row[0]).trim()
+      };
+    })
+    .filter(function (guest) {
+      return /^[a-f0-9]{48}$/i.test(guest.token);
+    });
+
+  if (guests.length > 0) {
+    sendInvitationRecoveryEmail(normalizedEmail, guests);
+  }
+}
+
+function sendInvitationRecoveryEmail(email, guests) {
+  const links = guests.map(function (guest) {
+    const url = INVITATION_PAGE_URL + '#invitacion=' + encodeURIComponent(guest.token);
+    return '<li><a href="' + escapeHtml(url) + '">' +
+      escapeHtml(guest.name) + ': abrir invitación</a></li>';
+  }).join('');
+  const html = '<!doctype html><html><body style="font-family:Arial,sans-serif;color:#183451">' +
+    '<h1 style="color:#123b70">Tus invitaciones</h1>' +
+    '<p>Usa el enlace personal que corresponda para confirmar tu asistencia:</p>' +
+    '<ul>' + links + '</ul>' +
+    '<p>Si no solicitaste estos enlaces, puedes ignorar este mensaje.</p></body></html>';
+
+  MailApp.sendEmail({
+    to: email,
+    subject: 'Tus enlaces de invitación — Tres años Paw Patrol',
+    body: 'Usa el enlace personal que corresponda para confirmar tu asistencia. Si no solicitaste estos enlaces, ignora este mensaje.',
+    htmlBody: html
+  });
+}
+
+function hashEmail(email) {
+  return Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_256,
+    email,
+    Utilities.Charset.UTF_8
+  ).map(function (byte) {
+    return ('0' + (byte & 0xff).toString(16)).slice(-2);
+  }).join('');
 }
 
 function getGuestSheet() {

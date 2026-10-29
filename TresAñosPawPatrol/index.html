@@ -222,6 +222,39 @@
       font-weight: 700;
     }
 
+    .recovery-panel {
+      width: min(100%, 460px);
+      margin: 20px auto 0;
+      padding: 20px;
+      background: var(--white);
+      border: 2px solid var(--blue);
+      border-radius: 16px;
+    }
+
+    .recovery-panel p {
+      font-size: 1rem;
+      text-align: left;
+    }
+
+    .recovery-panel label {
+      display: block;
+      margin: 16px 0 7px;
+      color: var(--blue);
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .recovery-panel input {
+      width: 100%;
+      min-height: 46px;
+      padding: 10px 12px;
+      color: var(--ink);
+      background: var(--white);
+      border: 2px solid #b7c8d8;
+      border-radius: 10px;
+      font: inherit;
+    }
+
     .rsvp-button, .dialog-button {
       padding: 13px 22px;
       color: var(--white);
@@ -251,6 +284,8 @@
       outline: 3px solid var(--red);
       outline-offset: 3px;
     }
+
+    [hidden] { display: none !important; }
 
     dialog {
       width: min(calc(100% - 32px), 460px);
@@ -481,8 +516,18 @@
         <span class="eyebrow">¡Te esperamos!</span>
         <h2>Confirma tu asistencia</h2>
         <p>Nos encantará compartir esta aventura contigo.</p>
-        <div class="rsvp-note" aria-live="polite">Abre tu enlace de invitación personal para confirmar asistencia.</div>
+        <div class="rsvp-note" aria-live="polite">Confirma con tu enlace personal o solicita que te lo enviemos al correo preregistrado.</div>
         <button class="rsvp-button" id="open-rsvp" type="button" disabled>Confirmar asistencia</button>
+        <div class="recovery-panel" id="recovery-panel" hidden>
+          <form id="recovery-form">
+            <p>¿No tienes tu enlace personal? Escribe el correo preregistrado y te enviaremos allí los enlaces asociados.</p>
+            <label for="recovery-email">Correo preregistrado</label>
+            <input id="recovery-email" name="email" type="email" maxlength="254" autocomplete="email" required>
+            <label class="honeypot" aria-hidden="true" for="recovery-website">Deja este campo vacío</label>
+            <input class="honeypot" id="recovery-website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <button class="dialog-button" id="recovery-submit" type="submit">Enviar mis enlaces</button>
+          </form>
+        </div>
         <div class="paw-divider" aria-hidden="true">🚒 🐾 🎉</div>
       </div>
     </section>
@@ -574,6 +619,10 @@
     const confirmationStorageNote = document.getElementById('confirmation-storage-note');
     const rsvpNote = document.querySelector('.rsvp-note');
     const openRsvpButton = document.getElementById('open-rsvp');
+    const recoveryPanel = document.getElementById('recovery-panel');
+    const recoveryForm = document.getElementById('recovery-form');
+    const recoveryEmailInput = document.getElementById('recovery-email');
+    const recoverySubmitButton = document.getElementById('recovery-submit');
     const confirmButton = document.getElementById('confirm-rsvp');
     const invitationToken = new URLSearchParams(window.location.hash.slice(1)).get('invitacion') || '';
     const photoCarousel = document.getElementById('photo-carousel');
@@ -694,16 +743,30 @@
 
     async function loadGuest() {
       if (!/^[a-f0-9]{48}$/i.test(invitationToken)) {
-        rsvpNote.textContent = 'Este formulario requiere el enlace personal incluido en tu invitación.';
+        rsvpNote.textContent = '¿No tienes tu enlace personal? Solicítalo al correo preregistrado.';
+        recoveryPanel.hidden = false;
         return;
       }
 
       try {
         const result = await requestJsonp('guest', { token: invitationToken });
+        if (result.status === 'confirmed') {
+          openRsvpButton.disabled = true;
+          recoveryPanel.hidden = true;
+          if (result.emailStatus === 'sent') {
+            rsvpNote.textContent = 'Esta invitación ya fue confirmada y el comprobante se envió por correo.';
+          } else if (result.emailStatus === 'error' || result.emailStatus === 'not_sent') {
+            rsvpNote.textContent = 'Esta invitación ya fue confirmada, pero no se pudo enviar el comprobante por correo. Contacta a los anfitriones.';
+          } else {
+            rsvpNote.textContent = 'Esta invitación ya fue confirmada y el envío del comprobante está pendiente.';
+          }
+          return;
+        }
         if (result.status !== 'ready') {
           throw new Error(result.message || 'Esta invitación no está disponible.');
         }
 
+        recoveryPanel.hidden = true;
         guest = result.guest;
         guestNameDisplay.textContent = guest.name;
         guestEmailInput.value = guest.email;
@@ -723,11 +786,43 @@
 
     loadGuest();
 
+    recoveryForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!recoveryForm.reportValidity()) return;
+
+      recoverySubmitButton.disabled = true;
+      recoverySubmitButton.textContent = 'Enviando solicitud...';
+      rsvpNote.textContent = 'Procesando tu solicitud...';
+      try {
+        await fetch(RSVP_ENDPOINT, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: new URLSearchParams({
+            action: 'recover',
+            email: recoveryEmailInput.value.trim(),
+            website: document.getElementById('recovery-website').value
+          })
+        });
+        recoveryForm.reset();
+        rsvpNote.textContent = 'Si el correo está registrado, recibirás tus enlaces de invitación. Revisa también la carpeta de correo no deseado.';
+      } catch (error) {
+        console.error('No se pudo enviar la solicitud de recuperación.', error);
+        rsvpNote.textContent = 'No se pudo enviar la solicitud. Revisa tu conexión e inténtalo de nuevo.';
+      } finally {
+        recoverySubmitButton.disabled = false;
+        recoverySubmitButton.textContent = 'Enviar mis enlaces';
+      }
+    });
+
     async function waitForRemoteConfirmation(token) {
       const deadline = Date.now() + 20000;
       while (Date.now() < deadline) {
         const result = await requestJsonp('status', { token });
-        if (result.status === 'confirmed') return;
+        if (result.status === 'confirmed' && result.emailStatus === 'sent') return;
+        if (result.status === 'confirmed' &&
+            (result.emailStatus === 'error' || result.emailStatus === 'not_sent')) {
+          throw new Error('La confirmación quedó registrada, pero no se pudo enviar el correo. Contacta a los anfitriones.');
+        }
         if (result.status === 'error') {
           throw new Error(result.message || 'No se pudo verificar el envío del comprobante.');
         }
